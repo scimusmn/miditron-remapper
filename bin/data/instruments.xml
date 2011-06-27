@@ -1,0 +1,90 @@
+<band font="ArialNarrow.ttf" xmlns:blck="http://www.smm.org/">
+	<instrument name="clicker" color="0x770000">
+		<note>60</note>
+		<channel>0</channel>
+		<repeat>true</repeat>
+		<delay>1</delay>
+		<dropdown>
+			<dds>OPEN</dds>
+			<dds>CLOSE</dds>
+		</dropdown>
+	</instrument>
+	<instrument name="washboard" color="0x007700">
+		<note>61</note>
+		<channel>0</channel>
+		<repeat>true</repeat>
+		<delay>1</delay>
+	</instrument>
+	<instrument name="cowbell" color="0x777700">
+		<note>62</note>
+		<channel>0</channel>
+		<repeat>true</repeat>
+		<delay>1</delay>
+	</instrument>
+	<instrument name="chime 1" color="0x000077">
+		<note>63</note>
+		<channel>0</channel>
+		<repeat>true</repeat>
+		<delay>1</delay>
+	</instrument>
+	<instrument name="chime 2" color="0x770077">
+		<note>64</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="chime 3" color="0x007777">
+		<note>65</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="chime 4" color="0x995555">
+		<note>66</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="chime 5" color="0x559955">
+		<note>67</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="cymbal" color="0x999955">
+		<note>68</note>
+		<channel>0</channel>
+		<repeat>true</repeat>
+		<delay>1</delay>
+	</instrument>
+	<instrument name="rainstick" color="0x555599">
+		<note>70</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="windchime" color="0x995599">
+		<note>71</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="windchime" color="0x559999">
+		<note>72</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="flute 1" color="0x779999">
+		<note>73</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="flute 2" color="0xbb7777">
+		<note>74</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="flute 3" color="0x77bb77">
+		<note>75</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="flute 4" color="0xbbbb77">
+		<note>76</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="flute 5" color="0x7777bb">
+		<note>77</note>
+		<channel>0</channel>
+	</instrument>
+	<instrument name="flute 6" color="0xbb77bb">
+		<note>78</note>
+		<channel>0</channel>
+	</instrument>
+	
+	
+</band>

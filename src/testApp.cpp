@@ -11,12 +11,11 @@ void testApp::setup(){
 	
 	ofSetVerticalSync(true);
 	
-	weConnected = tcpClient.setup(TCP_HOST_IP, 11999);
+	
 	
 	connectTime = 0;
 	deltaTime = 0;
 	
-	tcpClient.setVerbose(true);
 	
 	//MIDI Setup
 	
@@ -40,27 +39,6 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	rmp.update(75);
-	
-	// Network Updates
-	
-	//we are connected - lets send our text and check what we get back
-	if (weConnected) {
-		//if data has been sent lets update our text
-		string str = tcpClient.receive();
-		if( str.length() > 0 ){
-			msgRx = str;
-		}
-	}
-	/*if(!weConnected){
-		//if we are not connected lets try and reconnect every 5 seconds
-		deltaTime = ofGetElapsedTimeMillis() - connectTime;
-		
-		if( deltaTime > 5000 ){
-			weConnected = tcpClient.setup(TCP_HOST_IP, 11999);
-			connectTime = ofGetElapsedTimeMillis();
-		}
-		
-	}*/
 }
 
 //--------------------------------------------------------------
@@ -134,31 +112,7 @@ void testApp::windowResized(int w, int h){
 
 void testApp::midiToSend(vector< unsigned char > message){
 	rolandSynth.sendMessage(message);
-	/*for (unsigned int i=0; i<message.size(); i++) {
-		cout << int(message[i]) << " ";
-	}
 	
-	cout <<" end of MIDI Message" << endl;*/
-	
-	msgTx=MSG_START;
-	
-	for (unsigned int i=0; i<message.size(); i++) {
-		msgTx+=".";
-		msgTx+=ofToString(message[i]);
-	}
-	
-	msgTx+=".";
-	msgTx+=MSG_END;
-	
-	cout << msgTx<<endl;
-	
-	if(weConnected){
-		if(tcpClient.send(msgTx)){
-			
-		}else if(!tcpClient.isConnected()){
-			weConnected = false;
-		}
-	}
 }
 
 //

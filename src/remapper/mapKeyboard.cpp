@@ -13,6 +13,7 @@ extern ofColor white;
 extern ofColor black;
 extern ofColor yellow;
 extern ofColor gray;
+extern ofColor blue;
 
 remapKey::remapKey(double _w, double _h, char nt):pianoKey()
 {
@@ -68,7 +69,7 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 	xDis=wid/16.;
 	w=w+xDis;
 	h=octaves[0].h+xDis/2.;
-	clearMapped.setup("reset", "Arial.ttf", 24);
+	clearMapped.setup("reset", "fonts/Arial.ttf", 24);
 }
 
 void remapKeyboard::draw(double _x, double _y){
@@ -104,7 +105,7 @@ void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
   printOut.setSize(24);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
-	printOut.drawString("Select Default Instrument", xPos, yPos+offset*2);
+	printOut.drawString("Select synthesized voice (for unassigned notes)", xPos, yPos+offset*2);
 	ofSetColor(255, 255, 255);
 	printOut.drawString("Clear assigned instruments from entire keyboard", xPos, yPos);
 	clearMapped.draw(xPos+offset, yPos+offset);
@@ -125,57 +126,57 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 	if(key){
 		pianoKey & k=*key;
     
-    //_-_-_-_-_ draw the shape of the box
-		ofSetColor(black.opacity(.75));
-		ofBeginShape();
-    ofVertex(key->x, key->y+key->h);
-    ofBezierVertex(k.x, k.y+k.h, k.x+(k.x-box.x)/20,box.y,box.x,box.y);
-		ofVertex(box.x+box.width, box.y);
-    ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y,k.x+k.w, k.y+k.h);
-		ofEndShape(true);
-    ofFlat();
-		ofRoundedRect(box.x-20, box.y, box.width+40, box.height, 20);
-    
-    
-		/*ofSetColor(255,255,255);
-		string intro="when this key is pressed...";
-		printOut.drawString(intro, _x+offset, _y+offset);
-		int nextLine=_y+offset*2+printOut.stringHeight(intro);
-		int xDrawPosition=_x+2*offset;
-		key->buttons[0].draw(xDrawPosition,nextLine);
-		xDrawPosition+=key->buttons[0].w+offset/2;
-		string dflt="play default instrument";
-		ofSetColor(255,255,255);
-		printOut.drawString(dflt, xDrawPosition, nextLine);
-		xDrawPosition+=printOut.stringWidth(dflt)+offset*3;
-		key->buttons[1].draw(xDrawPosition,nextLine);
-		xDrawPosition+=key->buttons[1].w+offset/2;
-		string mpd="play mapped note";
-		ofSetColor(255,255,255);
-		printOut.drawString(mpd, xDrawPosition, nextLine);
-		xDrawPosition+=printOut.stringWidth(mpd)+offset;
-		if(!key->notes[0].isDefault()){
-			key->notes[0].draw(xDrawPosition,nextLine);
-			key->clearNotes.draw(xDrawPosition+key->notes[0].w+offset, nextLine);
-		}
-		else {
-			printOut.drawString("[no note is mapped, drag block to key]", xDrawPosition, nextLine);
-		}*/
-
     printOut.setMode(OF_FONT_CENTER);
     printOut.setMode(OF_FONT_TOP);
     printOut.setSize(30);
     string line="When key is pressed, play ";
     if(!key->notes[0].isDefault()){
 			line+=key->notes[0].title;
-      key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
+      //key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
 		}
     else {
       line+=programs.getString();
     }
+    
+    //double lineWidth=printOut.stringWidth(line);
+    
+    //int offset=50;
+    //ofRectangle box(_x+(ofGetWidth()-lineWidth)/2, _y+offset/2, lineWidth, _h-offset*2);
+    
+    //_-_-_-_-_ draw the shape of the box
+    /*ofNoFill();
+    ofSetLineWidth(3);
+    ofSetColor(white);
+    ofBeginShape();
+    ofVertex(key->x, key->y+key->h);
+    ofBezierVertex(k.x, k.y+k.h, k.x+(k.x-box.x)/20,box.y+(k.x-box.x)/20,box.x,box.y);
+		ofVertex(box.x+box.width, box.y);
+    ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y-((k.x+k.w)-(box.x+box.width))/20,k.x+k.w, k.y+k.h);
+		ofEndShape(true);
+    ofFlat();
+		ofRoundedRect(box.x-20, box.y, box.width+40, box.height, 20);*/
+    
+    ofFill();
+    ofSetLineWidth(1);
+		if(!k.notes[0].isDefault()) ofSetColor(k.notes[0].base.color);
+    else ofSetColor(blue*.8);
+		ofBeginShape();
+    ofVertex(key->x, key->y+key->h);
+    ofSetCurveResolution(30);
+    ofBezierVertex(k.x, k.y+k.h, k.x+(k.x-box.x)/20,box.y+(k.x-box.x)/20,box.x,box.y);
+		ofVertex(box.x+box.width, box.y);
+    ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y-((k.x+k.w)-(box.x+box.width))/20,k.x+k.w, k.y+k.h);
+		ofEndShape(true);
+    ofFlat();
+		ofRoundedRect(box.x-20, box.y, box.width+40, box.height, 20);
+    
 
     ofSetColor(white);
     printOut.drawString(line, box.x+box.width/2, box.y+30);
+    
+    if(!key->notes[0].isDefault()){
+      key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
+		}
 	}
 }
 

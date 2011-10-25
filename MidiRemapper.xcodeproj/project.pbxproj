@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA3FBB51142916800000CE74 /* soundBlocks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3FBB4F142916800000CE74 /* soundBlocks.cpp */; };
 		AA437106135878BE008C4F1D /* ofxTCPClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA4370FE135878BE008C4F1D /* ofxTCPClient.cpp */; };
 		AA437107135878BE008C4F1D /* ofxTCPManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA437100135878BE008C4F1D /* ofxTCPManager.cpp */; };
 		AA437108135878BE008C4F1D /* ofxTCPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA437102135878BE008C4F1D /* ofxTCPServer.cpp */; };
@@ -17,14 +18,12 @@
 		AA9C3618133A966100CB0F81 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA9C3617133A966100CB0F81 /* CoreMIDI.framework */; };
 		AA9C3626133A968200CB0F81 /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA9C3620133A968200CB0F81 /* RtMidi.cpp */; };
 		AA9C3627133A968200CB0F81 /* ofxMidiIn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA9C3623133A968200CB0F81 /* ofxMidiIn.cpp */; };
-		AAA27BE813439AA9008FD322 /* timeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA27BE713439AA9008FD322 /* timeline.cpp */; };
 		AAA28C2A134B6B33008FD322 /* mapKeyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28C29134B6B33008FD322 /* mapKeyboard.cpp */; };
-		AAA28CCC134B77AD008FD322 /* conductor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28CCA134B77AD008FD322 /* conductor.cpp */; };
 		AAA28E3E134BAA8F008FD322 /* remapInstruments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28E3D134BAA8F008FD322 /* remapInstruments.cpp */; };
 		AAA28E4D134BACCD008FD322 /* keyRemapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28E4C134BACCD008FD322 /* keyRemapper.cpp */; };
 		AAA28E51134BAD5B008FD322 /* instrument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28E4F134BAD5B008FD322 /* instrument.cpp */; };
 		AAA28E54134BAD66008FD322 /* band.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28E52134BAD66008FD322 /* band.cpp */; };
-		AAA28E7E134BADFA008FD322 /* keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA28E7C134BADFA008FD322 /* keyboard.cpp */; };
+		AAE9CCA8143BB0FC00630AA7 /* keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAE9CCA6143BB0FC00630AA7 /* keyboard.cpp */; };
 		AAF445FD133BD39600EFE904 /* ofxMidiOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAF445FC133BD39600EFE904 /* ofxMidiOut.cpp */; };
 		E45BE0AA0E8CC67C009D7055 /* GLee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE0A90E8CC67C009D7055 /* GLee.a */; };
 		E45BE2E40E8CC69C009D7055 /* rtAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE2E30E8CC69C009D7055 /* rtAudio.a */; };
@@ -95,6 +94,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AA3FBB4F142916800000CE74 /* soundBlocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soundBlocks.cpp; sourceTree = "<group>"; };
+		AA3FBB50142916800000CE74 /* soundBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soundBlocks.h; sourceTree = "<group>"; };
 		AA4370AF135749C3008C4F1D /* mapKeyboard.xcclassmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcclassmodel; path = mapKeyboard.xcclassmodel; sourceTree = "<group>"; };
 		AA4370B013574A44008C4F1D /* remapper.xcclassmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcclassmodel; path = remapper.xcclassmodel; sourceTree = "<group>"; };
 		AA4370F9135878BE008C4F1D /* Instructions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Instructions.txt; sourceTree = "<group>"; };
@@ -123,13 +124,9 @@
 		AA9C3623133A968200CB0F81 /* ofxMidiIn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidiIn.cpp; sourceTree = "<group>"; };
 		AA9C3624133A968200CB0F81 /* ofxMidiIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiIn.h; sourceTree = "<group>"; };
 		AA9C3625133A968200CB0F81 /* ofxMidiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiUtils.h; sourceTree = "<group>"; };
-		AAA27BE613439AA9008FD322 /* timeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeline.h; path = timeline/timeline.h; sourceTree = "<group>"; };
-		AAA27BE713439AA9008FD322 /* timeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = timeline.cpp; path = timeline/timeline.cpp; sourceTree = "<group>"; };
 		AAA27CF21343C49C008FD322 /* instruments.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = instruments.xml; path = bin/data/instruments.xml; sourceTree = "<group>"; };
 		AAA28C28134B6B33008FD322 /* mapKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mapKeyboard.h; sourceTree = "<group>"; };
 		AAA28C29134B6B33008FD322 /* mapKeyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mapKeyboard.cpp; sourceTree = "<group>"; };
-		AAA28CCA134B77AD008FD322 /* conductor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = conductor.cpp; path = timeline/conductor.cpp; sourceTree = "<group>"; };
-		AAA28CCB134B77AD008FD322 /* conductor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conductor.h; path = timeline/conductor.h; sourceTree = "<group>"; };
 		AAA28E3C134BAA8F008FD322 /* remapInstruments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = remapInstruments.h; sourceTree = "<group>"; };
 		AAA28E3D134BAA8F008FD322 /* remapInstruments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = remapInstruments.cpp; sourceTree = "<group>"; };
 		AAA28E4B134BACCD008FD322 /* keyRemapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyRemapper.h; sourceTree = "<group>"; };
@@ -138,8 +135,8 @@
 		AAA28E50134BAD5B008FD322 /* instrument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = instrument.h; sourceTree = "<group>"; };
 		AAA28E52134BAD66008FD322 /* band.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = band.cpp; path = ../Miditron_Sequencer/src/band.cpp; sourceTree = SOURCE_ROOT; };
 		AAA28E53134BAD66008FD322 /* band.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = band.h; path = ../Miditron_Sequencer/src/band.h; sourceTree = SOURCE_ROOT; };
-		AAA28E7C134BADFA008FD322 /* keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = keyboard.cpp; sourceTree = "<group>"; };
-		AAA28E7D134BADFA008FD322 /* keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboard.h; sourceTree = "<group>"; };
+		AAE9CCA6143BB0FC00630AA7 /* keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = keyboard.cpp; sourceTree = "<group>"; };
+		AAE9CCA7143BB0FC00630AA7 /* keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keyboard.h; sourceTree = "<group>"; };
 		AAF445FB133BD39600EFE904 /* ofxMidiOut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMidiOut.h; sourceTree = "<group>"; };
 		AAF445FC133BD39600EFE904 /* ofxMidiOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMidiOut.cpp; sourceTree = "<group>"; };
 		E45BE0390E8CC647009D7055 /* FreeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FreeImage.h; path = ../../../libs/freeimage/include/FreeImage.h; sourceTree = SOURCE_ROOT; };
@@ -216,6 +213,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA3FBB4E142916800000CE74 /* soundBlocks */ = {
+			isa = PBXGroup;
+			children = (
+				AA3FBB4F142916800000CE74 /* soundBlocks.cpp */,
+				AA3FBB50142916800000CE74 /* soundBlocks.h */,
+			);
+			name = soundBlocks;
+			path = ../Miditron_Sequencer/src/soundBlocks;
+			sourceTree = SOURCE_ROOT;
+		};
 		AA4370F7135878BE008C4F1D /* ofxNetwork */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,17 +319,6 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		AAA27BE913439AB8008FD322 /* timeline */ = {
-			isa = PBXGroup;
-			children = (
-				AAA28CCA134B77AD008FD322 /* conductor.cpp */,
-				AAA28CCB134B77AD008FD322 /* conductor.h */,
-				AAA27BE613439AA9008FD322 /* timeline.h */,
-				AAA27BE713439AA9008FD322 /* timeline.cpp */,
-			);
-			name = timeline;
-			sourceTree = "<group>";
-		};
 		AAA28C27134B6B16008FD322 /* remapper */ = {
 			isa = PBXGroup;
 			children = (
@@ -348,11 +344,11 @@
 			path = ../Miditron_Sequencer/src/instruments;
 			sourceTree = SOURCE_ROOT;
 		};
-		AAA28E7B134BADFA008FD322 /* keyboard */ = {
+		AAE9CCA5143BB0FC00630AA7 /* keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				AAA28E7C134BADFA008FD322 /* keyboard.cpp */,
-				AAA28E7D134BADFA008FD322 /* keyboard.h */,
+				AAE9CCA6143BB0FC00630AA7 /* keyboard.cpp */,
+				AAE9CCA7143BB0FC00630AA7 /* keyboard.h */,
 			);
 			name = keyboard;
 			path = ../Miditron_Sequencer/src/keyboard;
@@ -562,12 +558,12 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				AAE9CCA5143BB0FC00630AA7 /* keyboard */,
+				AA3FBB4E142916800000CE74 /* soundBlocks */,
 				AA4370AF135749C3008C4F1D /* mapKeyboard.xcclassmodel */,
 				AA4370B013574A44008C4F1D /* remapper.xcclassmodel */,
-				AAA28E7B134BADFA008FD322 /* keyboard */,
 				AAA28E4E134BAD5B008FD322 /* instruments */,
 				AAA28C27134B6B16008FD322 /* remapper */,
-				AAA27BE913439AB8008FD322 /* timeline */,
 				AA9C353B133A68C800CB0F81 /* main.cpp */,
 				AA9C353C133A68C800CB0F81 /* testApp.cpp */,
 				AA9C353D133A68C800CB0F81 /* testApp.h */,
@@ -741,19 +737,18 @@
 				AA9C3626133A968200CB0F81 /* RtMidi.cpp in Sources */,
 				AA9C3627133A968200CB0F81 /* ofxMidiIn.cpp in Sources */,
 				AAF445FD133BD39600EFE904 /* ofxMidiOut.cpp in Sources */,
-				AAA27BE813439AA9008FD322 /* timeline.cpp in Sources */,
 				AAA28C2A134B6B33008FD322 /* mapKeyboard.cpp in Sources */,
-				AAA28CCC134B77AD008FD322 /* conductor.cpp in Sources */,
 				AAA28E3E134BAA8F008FD322 /* remapInstruments.cpp in Sources */,
 				AAA28E4D134BACCD008FD322 /* keyRemapper.cpp in Sources */,
 				AAA28E51134BAD5B008FD322 /* instrument.cpp in Sources */,
 				AAA28E54134BAD66008FD322 /* band.cpp in Sources */,
-				AAA28E7E134BADFA008FD322 /* keyboard.cpp in Sources */,
 				AA437106135878BE008C4F1D /* ofxTCPClient.cpp in Sources */,
 				AA437107135878BE008C4F1D /* ofxTCPManager.cpp in Sources */,
 				AA437108135878BE008C4F1D /* ofxTCPServer.cpp in Sources */,
 				AA437109135878BE008C4F1D /* ofxUDPManager.cpp in Sources */,
 				AA43712113587D55008C4F1D /* ofxThread.cpp in Sources */,
+				AA3FBB51142916800000CE74 /* soundBlocks.cpp in Sources */,
+				AAE9CCA8143BB0FC00630AA7 /* keyboard.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

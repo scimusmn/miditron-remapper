@@ -12,7 +12,6 @@
 #include "mapKeyboard.h"
 #include "instrument.h"
 #include "band.h"
-#include "conductor.h"
 #include "keyRemapper.h"
 
 #include "ofxNetwork.h"
@@ -52,10 +51,6 @@ class testApp : public ofBaseApp{
 	
 	ofImage background;
 	ofImage pB;
-	
-	//ofTimer test;
-	midiSequencer conductor;
-	//digitDisplay test;
 	
 	ofDropDown test;
 	ofButton testBut;

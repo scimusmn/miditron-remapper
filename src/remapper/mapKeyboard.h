@@ -39,8 +39,6 @@ public:
 	remapKeyboard(){};
 	void setup(double wid,double nOctaves, unsigned char chan=1);
 	void draw(double _x, double _y);
-	void drawActiveNotes(double _x, double _y, double span, double _w=0, double _h=0);
-	void drawNoteSelect(double _x, double _y,double span=0);
 	bool clickDown(int _x, int _y);
 	bool clickUp();
 	int getButtonChoice(int num=-1);

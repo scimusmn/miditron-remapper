@@ -40,11 +40,18 @@ void remapper::draw(double _x, double _y)
 	
 	//ofSetColor(195,172,155);
 	//ofSetColor(0xffffff); // for steel background
-	ofSetColor(0xaaaaaa);
-	pianoBackground.draw(-10, kb.y-yDis/2,ofGetWidth()+10,kb.h+yDis);
-	//ofShade(0, kb.y-yDis/2, 15, ofGetWidth(), OF_DOWN, .4,false);
+  
+  //Draw the keyboard background
+	//ofSetColor(0xaaaaaa);
+	//pianoBackground.draw(-10, kb.y-yDis/2,ofGetWidth()+10,kb.h+yDis);
+  
+  ofSetColor(0x333333);
+  ofRaised(.4);
+  ofRoundedRect(0, kb.y-yDis/2, ofGetWidth(), kb.h+yDis, 4);
+  
+  
 	double indent=30;
-	ofRoundShadow(kb.x-indent/2, kb.y-indent/2, kb.w+indent, kb.h+indent, indent, .5);
+	ofShadowRounded(kb.x, kb.y, kb.w, kb.h, indent, indent);
 	
 	kb.draw((ofGetWidth()-kb.w)/2, band.y+band.h+20);
 	
@@ -58,8 +65,9 @@ void remapper::draw(double _x, double _y)
 	int verticalAug=70;
 	band.draw(_x, _y+verticalAug);
 	band.drawInstruments();
-	ofShade(band.x+band.w+20, _y, 15, band.h+verticalAug, OF_LEFT, .3);
-	ofShade(band.x+band.w+20, _y, 15, band.h+verticalAug, OF_RIGHT, .3,false);
+  ofSetShadowDarkness(.3);
+	ofShade(band.x+band.w+20, _y, 15, band.h+verticalAug, OF_LEFT);
+	ofShade(band.x+band.w+20, _y, 15, band.h+verticalAug, OF_RIGHT,false);
 	ofSetColor(0x333333);
 	dinc.drawString("INSTRUMENTS", _x+50, _y+(verticalAug-dinc.stringHeight("I"))/2);
 	
@@ -90,8 +98,8 @@ bool remapper::clickDown(int _x, int _y)
 		}*/
 	}
 	if(band.clickDown(_x, _y)){
-		band.lastInstrument().clickUp();
-		band.lastInstrument().clear();
+		//band.lastInstrument().clickUp();
+		//band.lastInstrument().clear();
 		held=band.lastInstrument();
 		held.clickDown(_x, _y);
 	}
@@ -101,9 +109,12 @@ bool remapper::clickDown(int _x, int _y)
 bool remapper::clickUp(int _x, int _y)
 {
 	kb.clickUp();
-	if(band.clickUp(kb.getActiveNotes())){
+	/*if(band.clickUp(kb.getActiveNotes())){
 		kb.selectButton(1);
-	}
+	}*/
+  if(band.clickUp()){
+    kb.selectButton(1);
+  }
 	for (unsigned int i=0; i<kb.getActiveNotes().size(); i++) {
 		kb.getActiveNotes()[i].clickUp();
 	}
@@ -140,6 +151,7 @@ void remapper::drag(int _x, int _y)
 {
 	band.mouseMotion(_x, _y);
 	held.mouseMotion(_x, _y);
+  kb.mouseMotion(_x, _y);
 	if(held.isHeld()){
 		bool tmp=false;
 		for (unsigned int i=0; i<kb.size(); i++) {

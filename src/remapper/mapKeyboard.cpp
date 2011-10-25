@@ -9,6 +9,11 @@
 
 #include "mapKeyboard.h"
 
+extern ofColor white;
+extern ofColor black;
+extern ofColor yellow;
+extern ofColor gray;
+
 remapKey::remapKey(double _w, double _h, char nt):pianoKey()
 {
 	note=nt;
@@ -20,7 +25,7 @@ remapKey::remapKey(double _w, double _h, char nt):pianoKey()
 	bSelected=false;
 	for (int j=0; j<3; j++) {
 		int cur=notes.size();
-		notes.push_back(instrument("holder",1,60,false));
+		notes.push_back(instrument("holder",1,60));
 		notes[cur].setDefault(true);
 	}
 	buttons.setup(2,25,OF_VERT,500);
@@ -52,7 +57,7 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 	}
 	programs.setMode(false);
 	printOut.loadFont("fonts/DinC.ttf");
-	printOut.setSize(30);
+	printOut.setSize(24);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
 	octaves.clear();
@@ -70,29 +75,6 @@ void remapKeyboard::draw(double _x, double _y){
 	pianoKeyboard::draw(_x,_y);
 }
 
-void remapKeyboard::drawActiveNotes(double _x, double _y, double span, double _w, double _h)
-{
-	//double width=_w/double(3*getKey().notes.size()/2+1);
-	string print="drag block here";
-	double width=printOut.stringWidth(print)+10;
-	double height=printOut.stringHeight("K")+10;
-	getKey().buttons.draw(_x,_y,span/2);
-	_x=getKey().buttons[1].x+50;
-	_y=getKey().buttons[1].y+50;
-	for (unsigned int i=0; i<getKey().notes.size(); i++) {
-		if(getKey().notes[i].isDefault()){
-			getKey().notes[i].cSetup(_x+i*1.5*width, _y, width, height);
-			ofSetColor(0xDD, 0xDD, 0xDD);
-			ofRoundBox(_x+i*1.5*width, _y, width, height, height/4, .2);
-			ofSetColor(0, 0, 0);
-			printOut.drawString(print, _x+width/2+i*1.5*width, _y+3*height/4);
-		}
-		else {
-			getKey().notes[i].draw(_x+i*1.5*width,_y);
-		}
-	}
-}
-
 string getNoteName(unsigned char note)
 {
 	string ret;
@@ -103,46 +85,7 @@ string getNoteName(unsigned char note)
 	return	ret+octave;
 }
 
-void remapKeyboard::drawNoteSelect(double _x, double _y, double span)
-{
-	
-	ofSetColor(0,0,0,64);
-	ofRectangle k(_x-50, 75, ofGetWidth()-_x+50,span);
-	ofRect(k.x,k.y,k.width,k.height);
-	ofSetColor(0,0,0,128);
-	ofBeginShape();
-	ofVertex(getKey().x+getKey().w/2, getKey().y+getKey().h/2);
-	double keyX=getKey().x+getKey().w/2;
-	double keyY=getKey().y+getKey().h/2;
-	ofBezierVertex(keyX, keyY, (keyX<k.x)?k.x:(k.x+getKey().x+getKey().w/2)/2,
-				   (keyX<k.x)?(k.y+k.height+getKey().y+getKey().h/2)/2:k.y+k.height,k.x, k.y+k.height);
-	ofVertex(k.x+k.width, k.y+k.height);
-	ofBezierVertex(k.x+k.width, k.y+k.height, (k.x+k.width+getKey().x+getKey().w/2)/2,
-				   k.y+k.height,keyX, keyY);
-	ofEndShape(true);
-	
-	ofSetColor(0, 0, 0, 128);
-	int chose=getKey().buttons.getChoice();
-	ofRoundShape(_x-20, getKey().buttons[chose].y+getKey().buttons[chose].h/2-75, ofGetWidth()-_x, 175, 20, 1);
-	//buttons[activeKey()].draw(_x,_y,span/2);
-	
-	//Print out the titles for the different notes
-	printOut.setSize(30);
-	ofSetColor(255, 255, 255);
-	printOut.setMode(OF_FONT_LEFT);
-	printOut.setMode(OF_FONT_TOP);
-	printOut.drawString("choose default sound", getKey().buttons[0].x+100, getKey().buttons[0].y-50);
-	printOut.drawString("define custom sound", getKey().buttons[1].x+100,getKey().buttons[1].y-50);
-	printOut.drawString(getNoteName(getKey().getNote()), programs.x+programs.w+30, programs.y);
-	printOut.setMode(OF_FONT_CENTER);
-	printOut.setMode(OF_FONT_BOT);
-	printOut.setSize(18);
-	
-	//Draw the "drag block here" boxes
-	//drawActiveNotes(buttons[activeKey()][1].x+100, buttons[activeKey()][1].y+50,span);
-	drawActiveNotes(_x,_y,span);
-	programs.draw(getKey().buttons[0].x+100, getKey().buttons[0].y+50);
-}
+
 
 void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
 {
@@ -151,21 +94,28 @@ void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
 	double binTop=_y+offset/2;
 	double binW=_w-offset;
 	double binH=_h-offset;
-	ofRoundShadow(binLeft-10, binTop-10, binW+20, binH+20, 15, .4);
+  ofSetShadowDarkness(.4);
+	ofShadowRounded(binLeft, binTop, binW, binH, 15, 10);
 	ofRect(binLeft, binTop, binW, binH);
 	
 	double yPos=_y+offset*1/2+10;
 	double xPos=_x+offset*1/2+10;
 	ofSetColor(255, 255, 255);
-	printOut.drawString("Select Default Instrument", xPos, yPos);
+  printOut.setSize(24);
+	printOut.setMode(OF_FONT_LEFT);
+	printOut.setMode(OF_FONT_TOP);
+	printOut.drawString("Select Default Instrument", xPos, yPos+offset*2);
 	ofSetColor(255, 255, 255);
-	printOut.drawString("Clear Mapped Instruments", xPos, yPos+offset*2);
-	clearMapped.draw(xPos+offset, yPos+offset*3);
-	programs.draw(xPos+offset, yPos+offset);
+	printOut.drawString("Clear assigned instruments from entire keyboard", xPos, yPos);
+	clearMapped.draw(xPos+offset, yPos+offset);
+	programs.draw(xPos+offset, yPos+offset*3);
 }
 
 void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 {
+  int offset=50;
+  ofRectangle box(_x+offset/2+20, _y+offset/2, _w-offset-40, _h-offset*2);
+  
 	pianoKey * key=0;
 	for (unsigned int i=0; i<size(); i++) {
 		if ((*this)[i].isSelected()) {
@@ -173,17 +123,21 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 		}
 	}
 	if(key){
-		
-		int offset=50;
-		ofSetColor(0, 0, 0,192);
+		pianoKey & k=*key;
+    
+    //_-_-_-_-_ draw the shape of the box
+		ofSetColor(black.opacity(.75));
 		ofBeginShape();
-		ofVertex(key->x, key->y+key->h);
-		ofVertex(_x+offset/2+20, _y+offset/2);
-		ofVertex(_x+offset/2+_w-offset-20, _y+offset/2);
-		ofVertex(key->x+key->w, key->y+key->h);
+    ofVertex(key->x, key->y+key->h);
+    ofBezierVertex(k.x, k.y+k.h, k.x+(k.x-box.x)/20,box.y,box.x,box.y);
+		ofVertex(box.x+box.width, box.y);
+    ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y,k.x+k.w, k.y+k.h);
 		ofEndShape(true);
-		ofRoundShape(_x+offset/2, _y+offset/2, _w-offset, _h-offset*2, 20, true);
-		ofSetColor(255,255,255);
+    ofFlat();
+		ofRoundedRect(box.x-20, box.y, box.width+40, box.height, 20);
+    
+    
+		/*ofSetColor(255,255,255);
 		string intro="when this key is pressed...";
 		printOut.drawString(intro, _x+offset, _y+offset);
 		int nextLine=_y+offset*2+printOut.stringHeight(intro);
@@ -206,8 +160,22 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 		}
 		else {
 			printOut.drawString("[no note is mapped, drag block to key]", xDrawPosition, nextLine);
-		}
+		}*/
 
+    printOut.setMode(OF_FONT_CENTER);
+    printOut.setMode(OF_FONT_TOP);
+    printOut.setSize(30);
+    string line="When key is pressed, play ";
+    if(!key->notes[0].isDefault()){
+			line+=key->notes[0].title;
+      key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
+		}
+    else {
+      line+=programs.getString();
+    }
+
+    ofSetColor(white);
+    printOut.drawString(line, box.x+box.width/2, box.y+30);
 	}
 }
 
@@ -234,7 +202,10 @@ bool remapKeyboard::clickDown(int _x, int _y)
 			selectButton(i,0);
 		}
 	}
-	else ret=pianoKeyboard::clickDown(_x,_y);
+	else if(ret=pianoKeyboard::clickDown(_x,_y)){
+    if(getKey().notes[0].isDefault()) getKey().notes[0].base.note=getKey().getNote()+MIDI_KEYBOARD_START;
+    getKey().notes[0].play();
+  }
 	return ret;
 }
 
@@ -242,7 +213,9 @@ bool remapKeyboard::clickUp()
 {
 	programs.clickUp();
 	clearMapped.clickUp();
-	return pianoKeyboard::clickUp();
+	if(pianoKeyboard::clickUp())
+    getKey().notes[0].stop();
+  
 }
 
 int remapKeyboard::getButtonChoice(int num)

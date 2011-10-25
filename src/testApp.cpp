@@ -31,14 +31,25 @@ void testApp::setup(){
 	rmp.setup();
 	//rmp.registerEvents();
 	
-	keyboard.openPort("KeyRig 49");
+	keyboard.openPort("KeyRig 49");//"KeyRig 49"
 	rolandSynth.openPort("decoder");
 
 }
 
+long timeCL;
+
 //--------------------------------------------------------------
 void testApp::update(){
 	rmp.update(75);
+  /*if(timeCL<ofGetElapsedTimeMillis()){
+    vector<unsigned char> msg;
+    msg.push_back(248);
+    midiToSend(msg);
+    midiToSend(msg);
+    midiToSend(msg);
+    midiToSend(msg);
+    timeCL=ofGetElapsedTimeMillis()+1;
+  }*/
 }
 
 //--------------------------------------------------------------
@@ -66,18 +77,26 @@ void testApp::draw(){
 	
 	rmp.draw(0, 75);
 	ofSetColor(0x333333);
-	ofRoundBox(-30, 0, ofGetWidth()+60, 75, 15, .2);
-	ofShade(0, 75, 15, ofGetWidth(), OF_DOWN, .5);
+  ofRaised(.2);
+	ofRoundedRect(-30, 0, ofGetWidth()+60, 75, 15);
+  ofSetShadowDarkness(.5);
+	ofShade(0, 75, 15, ofGetWidth(), OF_DOWN);
 	ofSetColor(0xFFFFFF);
 	report.setMode(OF_FONT_CENTER);
-	report.setSize(50);
+	report.setSize(40);
 	report.drawString("DRAG INSTRUMENTS TO THE KEYS OF THE KEYBOARD", ofGetWidth()/2, 75-20);
   //ofPopMatrix();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	
+	if(key==' '){
+    vector<unsigned char> msg;
+    msg.push_back(0x90);
+    msg.push_back(51);
+    msg.push_back(45);
+    midiToSend(msg);
+  }
 }
 
 //--------------------------------------------------------------
@@ -111,16 +130,28 @@ void testApp::windowResized(int w, int h){
 }
 
 void testApp::midiToSend(vector< unsigned char > message){
-	rolandSynth.sendMessage(message);
 	
+  rolandSynth.sendMessage(message);
+	cout << "Message begin:";
+  for (int i=0; i<message.size(); i++) {
+    cout << int(message[i])<< ':';
+  }
+  cout << "Message End\n";
 }
 
 //
 
 
 void testApp::midiReceived(double deltatime, std::vector< unsigned char > *message, int port){
+  /*cout << "Message Begin:";
+  for (unsigned int i=0; i<message->size(); i++) {
+    cout << int(message->at(i)) << ":";
+  }
+  cout << "Message End\n";*/
 	if(message->size()>=3){
-		if (message->at(0)==MIDI_NOTE_ON&&port==keyboard.getPort()) {
+		if ((message->at(0)==MIDI_NOTE_ON&&port==keyboard.getPort())||1) {
+      //midiToSend(*message);
+      
 			if(message->at(1)>=MIDI_KEYBOARD_START&&message->at(1)<MIDI_KEYBOARD_END){
 				rmp.kb[message->at(1)-MIDI_KEYBOARD_START].setPressed(message->at(2));
 				if(!rmp.kb.getButtonChoice(message->at(1)-MIDI_KEYBOARD_START)){

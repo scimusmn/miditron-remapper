@@ -12,9 +12,12 @@
 #include "instrument.h"
 #include "band.h"
 
+#define as_remapInst(x) static_cast<remapInst *>(x)
+
 class remapInst : public instrument{
 protected:
 public:
+  int point;
 	remapInst():instrument(){}
 	remapInst(string title, unsigned char channel,unsigned char note);
 	void operator=(const instrument & t);
@@ -29,10 +32,12 @@ public:
 
 class remapBand : public bandBar{
 protected:
-	vector<remapInst> rInstruments;
+	//vector<remapInst> rInstruments;
+  ofPoint margin;
+  ofPoint binPad;
 public:
 	remapBand():bandBar(){}
-	void setHeight(double hgt,double top=0, double bot=0);
+  void configureSize();
 	void setup(xmlParse * config, double hgt=0);
 	void draw(double _x, double _y);
 	void drawDraggedBlocks();
@@ -42,6 +47,6 @@ public:
 	bool mouseMotion(int _x, int _y);
 	remapInst & lastInstrument()
 	{
-		return rInstruments[lastInst];
+		return *(as_remapInst(instruments[lastInst]));
 	}
 };

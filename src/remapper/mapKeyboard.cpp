@@ -66,10 +66,11 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 		octaves.push_back(remapOctave(wid/nOctaves,i*12));
 	}
 	pressKey(0);
-	xDis=wid/16.;
-	w=w+xDis;
-	h=octaves[0].h+xDis/2.;
-	clearMapped.setup("reset", "fonts/Arial.ttf", 24);
+	framePad.y=wid/32;
+	framePad.x=wid/32.;;
+	w=w+framePad.x*2;
+	h=octaves[0].h+framePad.y;
+	clearMapped.setup("Reset", "fonts/Arial.ttf", 20);
 }
 
 void remapKeyboard::draw(double _x, double _y){
@@ -79,43 +80,58 @@ void remapKeyboard::draw(double _x, double _y){
 string getNoteName(unsigned char note)
 {
 	string ret;
-	string octave=ofToString((MIDI_KEYBOARD_START+note)/12);
+	//string octave=ofToString((MIDI_KEYBOARD_START+note)/12);
 	int k=note%12;
 	ret=(k<2)?"C":(k<4)?"D":(k==4)?"E":(k<7)?"F":(k<9)?"G":(k<11)?"A":"B";
 	if(k==1||k==3||k==6||k==8||k==10) ret+="#";
-	return	ret+octave;
+	return	ret;//+octave;
 }
 
 
 
 void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
 {
-	double offset=50;
-	double binLeft=_x+offset/2;
-	double binTop=_y+offset/2;
-	double binW=_w-offset;
-	double binH=_h-offset;
+  ofPoint margin(50,50);
+  ofPoint pad(20,20);
+  
+  //_-_-_-_-_ draw box to hold the controls
   ofSetShadowDarkness(.4);
-	ofShadowRounded(binLeft, binTop, binW, binH, 15, 10);
-	ofRect(binLeft, binTop, binW, binH);
-	
-	double yPos=_y+offset*1/2+10;
-	double xPos=_x+offset*1/2+10;
-	ofSetColor(255, 255, 255);
+	ofShadowRounded(_x,_y,_w,_h, 0, 10);
+  ofSetColor(black.opacity(.3));
+	ofRect(_x,_y,_w,_h);
+  
+  ofSetColor(gray.opacity(.3));
+  drawHatching(_x, _y, _w, _h, 3, 3);
+  
+  //_-_-_-_-_ shadow the edges of the box
+  ofSetShadowDarkness(.4);
+  ofShade(_x, _y+_h/2, 3, _w, OF_DOWN,false);
+  ofShade(_x, _y+_h/2, 3, _w, OF_UP);
+  
+  ofShade(_x, _y, 10, _w, OF_DOWN);
+  ofShade(_x, _y+_h, 10, _w, OF_UP);
+  ofShade(_x, _y, 10, _h, OF_RIGHT);
+  ofShade(_x+_w, _y, 10, _h, OF_LEFT);
+  
+  _y-=3*pad.y/2;
+  
+  ofSetColor(255, 255, 255);
   printOut.setSize(24);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
-	printOut.drawString("Select synthesized voice (for unassigned notes)", xPos, yPos+offset*2);
+	printOut.drawString("Select synthesized voice (for unassigned notes)", _x+pad.x, _y+_h/5);
 	ofSetColor(255, 255, 255);
-	printOut.drawString("Clear assigned instruments from entire keyboard", xPos, yPos);
-	clearMapped.draw(xPos+offset, yPos+offset);
-	programs.draw(xPos+offset, yPos+offset*3);
+	printOut.drawString("Clear assigned instruments from entire keyboard", _x+pad.x, _y+3*_h/5+pad.y);
+	clearMapped.draw(_x+pad.x*2,_y+2*_h/5);
+	programs.draw(_x+pad.x*2,_y+4*_h/5+pad.y);
 }
 
 void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 {
-  int offset=50;
-  ofRectangle box(_x+offset/2+20, _y+offset/2, _w-offset-40, _h-offset*2);
+  ofPoint margin(25,25);
+  ofPoint pad(20,15);
+  
+  ofRectangle box(_x+margin.x+pad.x, _y+margin.y, _w-margin.x*2-pad.x*2, _h-margin.y*2*2);
   
 	pianoKey * key=0;
 	for (unsigned int i=0; i<size(); i++) {
@@ -129,36 +145,23 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
     printOut.setMode(OF_FONT_CENTER);
     printOut.setMode(OF_FONT_TOP);
     printOut.setSize(30);
-    string line="When key is pressed, play ";
+    string line="When this key is pressed, play ";
     if(!key->notes[0].isDefault()){
 			line+=key->notes[0].title;
       //key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
 		}
     else {
+      line+=getNoteName(key->notes[0].base.note%12)+" on the ";
       line+=programs.getString();
     }
     
-    //double lineWidth=printOut.stringWidth(line);
-    
-    //int offset=50;
-    //ofRectangle box(_x+(ofGetWidth()-lineWidth)/2, _y+offset/2, lineWidth, _h-offset*2);
-    
-    //_-_-_-_-_ draw the shape of the box
-    /*ofNoFill();
-    ofSetLineWidth(3);
-    ofSetColor(white);
-    ofBeginShape();
-    ofVertex(key->x, key->y+key->h);
-    ofBezierVertex(k.x, k.y+k.h, k.x+(k.x-box.x)/20,box.y+(k.x-box.x)/20,box.x,box.y);
-		ofVertex(box.x+box.width, box.y);
-    ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y-((k.x+k.w)-(box.x+box.width))/20,k.x+k.w, k.y+k.h);
-		ofEndShape(true);
-    ofFlat();
-		ofRoundedRect(box.x-20, box.y, box.width+40, box.height, 20);*/
-    
+    //_-_-_-_-_ draw the shap of the info box
     ofFill();
     ofSetLineWidth(1);
-		if(!k.notes[0].isDefault()) ofSetColor(k.notes[0].base.color);
+		if(!k.notes[0].isDefault()){
+      if(k.isSharp()) ofSetColor(k.notes[0].base.color-.2*255.);
+      else ofSetColor(k.notes[0].base.color);
+    }
     else ofSetColor(blue*.8);
 		ofBeginShape();
     ofVertex(key->x, key->y+key->h);
@@ -168,14 +171,14 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
     ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y-((k.x+k.w)-(box.x+box.width))/20,k.x+k.w, k.y+k.h);
 		ofEndShape(true);
     ofFlat();
-		ofRoundedRect(box.x-20, box.y, box.width+40, box.height, 20);
+		ofRoundedRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height, pad.x);
     
 
     ofSetColor(white);
-    printOut.drawString(line, box.x+box.width/2, box.y+30);
+    printOut.drawString(line, box.x+box.width/2, box.y+box.height/6);
     
     if(!key->notes[0].isDefault()){
-      key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
+      key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+box.height*2/6+printOut.stringHeight(line));
 		}
 	}
 }

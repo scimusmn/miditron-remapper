@@ -9,28 +9,11 @@
 
 #include "remapInstruments.h"
 
-/*bool remapInst::clickUp(vector<instrument> & compare)
-{
-	base.clickUp();
-	bool ret=false;
-	for (unsigned int i=0; i<blocks.size(); i++) {
-		if(blocks[i].clickUp()){
-			lastBlock=i;
-			for (unsigned int j=0; j<compare.size(); j++) {
-				if (over(compare[j],i)) {
-					compare[j]=*(this);
-					compare[j].setDefault(false);
-					ret=true;
-				}
-			}
-			blocks.erase(blocks.begin()+i);
-			lastBlock=-1;
-			stop();
-		}
-	}
-	bHolding=false;
-	return ret;
-}*/
+extern ofColor white;
+extern ofColor black;
+extern ofColor yellow;
+extern ofColor gray;
+extern ofColor blue;
 
 bool remapInst::clickUp()
 {
@@ -131,6 +114,10 @@ void remapInst::drawBackground()
 
 void remapBand::setup(xmlParse * config,double hgt)
 {
+  bar.w=rightBorder=0;
+  blockMargin.x=10;
+  blockMargin.y=5;
+  numBlocksPerBin=4;
 	clearBut.setTitle("clear blocks");
 	clearBut.setTextSize(24);
 	clearBut.setAvailable(true);
@@ -142,7 +129,7 @@ void remapBand::setup(xmlParse * config,double hgt)
 			string col=xml.prop;
 			string title=xml.name;
 			long color=strtol(col.c_str(),NULL,0);
-			int curInst=rInstruments.size();
+			int curInst=instruments.size();
 			unsigned char note, channel;
 			bool percussive=false;
 			double delay=0;
@@ -167,86 +154,82 @@ void remapBand::setup(xmlParse * config,double hgt)
 					case 3:
 						delay=ofToFloat(node[1]);
 						break;
-					case 8:
-						//ddGroup.push_back(ofDropDown(&xml->child[i]));
 						break;
 					default:
 						break;
 				}
 			}
-			rInstruments.push_back( remapInst(title,channel,note));
-			rInstruments[curInst].setColor(color);
+			instruments.push_back( new remapInst(title,channel,note));
+			instruments[curInst]->setColor(color);
 		}
 	}
-	setHeight(hgt);
+	configureSize();
+}
+
+void remapBand::configureSize()
+{
+  adjustSize();
+  margin=ofPoint (20,20);
+	binPad=ofPoint(20,20);
+  numBlocksPerBin=4;
+	numBins=min(16,int(instruments.size()));
+  numBins=(numBins%4)?numBins/numBlocksPerBin+1:numBins/numBlocksPerBin;
+  w=(bar.w+bin.width+binPad.x)*numBins+margin.x;
+  h=numBlocksPerBin*(cell.y+blockMargin.y)-blockMargin.y+margin.y;
 }
 
 void remapBand::draw(double _x, double _y)
 {
 	x=_x,y=_y;
-	
-	//sidebar background
-	ofSetColor(255, 255, 255);
-	double sideBarScale=(ofGetWidth()/sideBarBack.width);
-	sideBarBack.draw(x, y+h-sideBarScale*sideBarBack.height,ofGetWidth(),sideBarScale*sideBarBack.height);
-	
+  
+  int nbpb=numBlocksPerBin;
 	//
 	for(int i=0; i<numBins; i++){
 		ofSetColor(0x999999);
-		double binLeft=x+bar.w+(bar.w+binWidth)*i;
-		double binRight=x+bar.w+binWidth+(bar.w+binWidth)*i;
+		double binLeft=x+margin.x+(bin.width+binPad.x)*i;
+		double binRight=x+margin.x+bin.width+(bin.width+binPad.x)*i;
     
     // shading behind the blocks in the bins
-		ofShadowRounded(binLeft, y+yoff, binWidth, numBlocksPerBin*(binHeight+yBlockSpace), 15, 20);
-		ofRect(binLeft, y+yoff, binWidth, numBlocksPerBin*(binHeight+yBlockSpace));
+    ofSetShadowDarkness(.4);
+		ofShadowRounded(binLeft, y+margin.y, bin.width, h+blockMargin.y, 0,10);
+    ofSetColor(gray.opacity(.5));
+		ofRect(binLeft, y+margin.y, bin.width, h+blockMargin.y);
+    
+    ofSetColor(gray.opacity(.3));
+    drawHatching(binLeft, y+margin.y, bin.width, h+blockMargin.y, 3, 3);
 		
     ofSetShadowDarkness(.3);
-		ofShade(binLeft, y+yoff, 10, h+yBlockSpace-yGap, OF_RIGHT);
-		ofShade(binRight, y+yoff, 10, h+yBlockSpace-yGap, OF_LEFT);
+		ofShade(binLeft, y+margin.y, 10, h+blockMargin.y, OF_RIGHT);
+		ofShade(binRight, y+margin.y, 10, h+blockMargin.y, OF_LEFT);
 		
     ofSetShadowDarkness(.2);
-		ofShade(binLeft, y+h-yGap+yBlockSpace, 10, binWidth, OF_UP);
-		ofShade(binLeft, y+yoff, 10, binWidth, OF_DOWN);
+		ofShade(binLeft, y+h+blockMargin.y+margin.y, 10, bin.width, OF_UP);
+		ofShade(binLeft, y+margin.y, 10, bin.width, OF_DOWN);
+    for (unsigned int j=0; j<nbpb&&j+i*nbpb<instruments.size()&&j+i*nbpb<16; j++) {
+      instruments[j+i*nbpb]->draw(binLeft+blockMargin.x,y+margin.y+binPad.y/2+blockMargin.y/2+(cell.y+blockMargin.y*2)*j);
+      if(j<numBlocksPerBin-1){
+        double tmpY=instruments[j+i*nbpb]->y+cell.y;
+        ofSetShadowDarkness(.3);
+        ofShade(binLeft, tmpY, 3, bin.width, OF_UP);
+        ofShade(binLeft, tmpY, 3, bin.width, OF_DOWN,false);
+      }
+    }
 	}
 	
-	for (unsigned int i=0; i<rInstruments.size()&&i<16; i++) {
-		rInstruments[i].draw(x+bar.w+(bar.w+binWidth)*(i/numBlocksPerBin)+xBlockSpace,y+yoff+yBlockSpace+(binHeight+yBlockSpace)*(i%numBlocksPerBin));
-		if(i%numBlocksPerBin<numBlocksPerBin-1){
-			double tmpY=rInstruments[i].y+binHeight-yBlockSpace;
-      ofSetShadowDarkness(.3);
-			ofShade(x+bar.w+(bar.w+binWidth)*(i/numBlocksPerBin), tmpY, 3, binWidth, OF_UP);
-			ofShade(x+bar.w+(bar.w+binWidth)*(i/numBlocksPerBin), tmpY, 3, binWidth, OF_DOWN,false);
-		}
-	}
-	
-	//------ shading on the bottom of the bar
-  ofSetShadowDarkness(.5);
-	ofShade(x, y+yoff+h, 15, ofGetWidth(), OF_UP);
-	//ofShade(x, y+yoff+h, 15, ofGetWidth(), OF_DOWN, .5);
-	
-	
-	//bar.draw(x,_y);
-	
-	//Shades over ends of the scroll bar
-  ofSetShadowDarkness(.3);
-	ofShade(x, y+yoff, 5, bar.w+4, OF_DOWN);
-	ofShade(x, y+yoff+viewSize, 5, bar.w+4, OF_UP);
-	
-	//clearBut.draw((w-clearBut.w)/2, getBottomPos()+((yBot)-clearBut.h)/2);
 }
 
 void remapBand::drawDraggedBlocks()
 {
-	for (unsigned int i=0; i<rInstruments.size(); i++) {
-		rInstruments[i].drawBackground();
+	for (unsigned int i=0; i<instruments.size(); i++) {
+		instruments[i]->drawBackground();
 	}
 }
 
 bool remapBand::clickDown(int _x, int _y)
 {
 	bool ret=false;
-	for (unsigned int i=0; i<rInstruments.size(); i++) {
-		if(!bHolding&&_y>y+yoff&&_y<=y+yoff+viewSize&&rInstruments[i].over(_x,_y)){
+	for (unsigned int i=0; i<instruments.size(); i++) {
+		if(!bHolding&&instruments[i]->over(_x,_y)){
 			ret=bHolding=true;
 			lastInst=i;
 		}
@@ -255,49 +238,11 @@ bool remapBand::clickDown(int _x, int _y)
 	return ret;
 }
 
-void remapBand::setHeight(double hgt,double top, double bot)
-{
-	h=(hgt)?hgt:ofGetHeight();
-	yoff=top;
-	yBot=bot;
-	viewSize=h-(yoff+yBot);
-	yGap=bar.w=20;
-	xBlockSpace=10;
-	yBlockSpace=5;
-	numBlocksPerBin=4;
-	numBins=min(16,int(rInstruments.size()));
-  numBins=(numBins%4)?numBins/numBlocksPerBin+1:numBins/numBlocksPerBin;
-	h=numBlocksPerBin*(binHeight+yBlockSpace)-yBlockSpace+yGap;
-	for (unsigned int i=0; i<rInstruments.size(); i++) {
-		binWidth=max(binWidth,rInstruments[i].w+xBlockSpace*2);
-		binHeight=max(binHeight,rInstruments[i].h+yBlockSpace*2);
-	}
-	w=(bar.w+binWidth)*numBins+bar.w;
-	double fullSize=binHeight*rInstruments.size();
-	//bar.setup(20, viewSize, OF_VERT);
-	//bar.registerArea(viewSize,fullSize);
-}
-
-/*bool remapBand::clickUp(vector<instrument> & comp)
-{
-	bool ret=false;
-	for (unsigned int i=0; i<rInstruments.size(); i++) {
-		if(rInstruments[i].clickUp(comp)){
-			ret=true;
-			lastInst=i;
-		}
-	}
-	bHolding=false;
-	clearBut.clickUp();
-	bar.clickUp();
-	return ret;
-}*/
-
 bool remapBand::clickUp()
 {
 	bool ret=false;
-	for (unsigned int i=0; i<rInstruments.size(); i++) {
-		if(rInstruments[i].clickUp()){
+	for (unsigned int i=0; i<instruments.size(); i++) {
+		if(instruments[i]->clickUp()){
 			ret=true;
 			lastInst=i;
 		}
@@ -310,12 +255,12 @@ bool remapBand::clickUp()
 
 bool remapBand::mouseMotion(int _x, int _y)
 {
-	for (unsigned int i=0; i<rInstruments.size(); i++) {
-		rInstruments[i].mouseMotion(_x,_y);
+	for (unsigned int i=0; i<instruments.size(); i++) {
+		instruments[i]->mouseMotion(_x,_y);
 	}
 	if(bar.mouseMotion(_x,_y)){
-		for (unsigned int i=0; i<rInstruments.size(); i++) {
-			rInstruments[i].update(-bar.getScrollPosition(),OF_VERT);
+		for (unsigned int i=0; i<instruments.size(); i++) {
+			instruments[i]->update(-bar.getScrollPosition(),OF_VERT);
 		}
 	}
 }

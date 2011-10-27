@@ -5,6 +5,12 @@
 #define MSG_END   "MSGEND"
 #define TCP_HOST_IP "127.0.0.1"
 
+extern ofColor white;
+extern ofColor black;
+extern ofColor yellow;
+extern ofColor gray;
+extern ofColor blue;
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	// Network Setup
@@ -61,13 +67,17 @@ void testApp::draw(){
 	
 	ofBackground(0x33, 0x33, 0x33);
 	
-	ofSetColor(0x444400);
+	/*ofSetColor(yellow.opacity(.5));
 	for (int i=0; i*10<ofGetHeight(); i++) {
 		ofRect(0, i*10, ofGetWidth(), 1);
 	}
 	for (int i=0; i*10<ofGetWidth(); i++) {
 		ofRect(i*10, 0, 1, ofGetHeight());
-	}
+	}*/
+  
+  ofSetColor(black.opacity(.25));
+  drawHatching(0,0,ofGetWidth(),ofGetHeight(), 20,10);
+  
 
 	/*kb.draw(ofGetWidth()/32, ofGetHeight()-(kb.h+ofGetWidth()/32));
 	
@@ -84,7 +94,7 @@ void testApp::draw(){
 	ofSetColor(0xFFFFFF);
 	report.setMode(OF_FONT_CENTER);
 	report.setSize(40);
-	report.drawString("DRAG INSTRUMENTS TO THE KEYS OF THE KEYBOARD", ofGetWidth()/2, 75-20);
+	report.drawString("MIDI PATCHER", ofGetWidth()/2, 75-20);
   //ofPopMatrix();
 }
 

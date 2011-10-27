@@ -16,6 +16,7 @@ class remapper: public ofInterObj{
 protected:
 	ofButton reset;
 	double xDis, yDis;
+  ofImage controlBackground;
 	ofImage pianoBackground;
 	remapInst held;
 	ofFont dinc;

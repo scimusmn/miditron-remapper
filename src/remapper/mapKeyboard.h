@@ -32,9 +32,8 @@ public:
 class remapKeyboard : public pianoKeyboard{
 protected:
 	ofFont printOut;
-	vector<vector<instrument> > notes;
 	ofDropDown programs;
-	ofButton clearMapped;
+	midiButton clearMapped;
 public:
 	remapKeyboard(){};
 	void setup(double wid,double nOctaves, unsigned char chan=1);

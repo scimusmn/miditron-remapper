@@ -34,15 +34,6 @@ void remapper::update(int num)
 	band.update();
 }
 
-
-
-void drawShadowsAroundRect(ofRectangle & box, double depth){
-  ofShade(box.x, box.y, depth, box.width, OF_DOWN, false);
-  ofShade(box.x+box.width, box.y, depth, box.height, OF_LEFT);
-  ofShade(box.x, box.y+box.height, depth, box.width, OF_UP);
-  ofShade(box.x, box.y, depth, box.height, OF_RIGHT, false);
-}
-
 void remapper::draw(double _x, double _y)
 {
   bool band1st=false;
@@ -73,7 +64,7 @@ void remapper::draw(double _x, double _y)
   drawHatching(keyBox.x, keyBox.y, keyBox.width, keyBox.height, 4,4);
   
 	double indent=30;
-	ofShadowRounded(kb.x+indent/2, kb.y+indent/2, kb.w-indent, kb.h-indent, kb.w/64., indent);
+	ofShadowRounded(kb.x+indent/2, kb.y+indent/2, kb.w-indent, kb.h-indent, kb.framePad.x/2., indent);
   
   //_-_-_-_-_ draw the keyboard
   kb.draw((keyBox.width-kb.w)/2, keyBox.y+controlPad.y/2);
@@ -93,7 +84,11 @@ void remapper::draw(double _x, double _y)
   ofShade(keyBox.x, keyBox.y+keyBox.height, 10, keyBox.width, OF_UP);
   
   //_-_-_-_-_ draw the band box contents
-  band.draw(bandBox.x+controlPad.x,bandBox.y+pad.y);
+  dinc.setSize(22);
+  dinc.setMode(OF_FONT_TOP);
+  ofSetColor(gray);
+  dinc.drawString("Drag accoustic instruments to keys on the keyboard", bandBox.x+40, bandBox.y+20);
+  band.draw(bandBox.x+controlPad.x,bandBox.y+pad.y*1.5);
 	band.drawInstruments();
   
   //_-_-_-_-_ draw the keyboard info

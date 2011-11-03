@@ -94,8 +94,9 @@ void testApp::draw(){
 	ofSetColor(0xFFFFFF);
 	report.setMode(OF_FONT_CENTER);
 	report.setSize(40);
-	report.drawString("MIDI PATCHER", ofGetWidth()/2, 75-20);
-  //ofPopMatrix();
+	report.drawString("PATCH INSTRUMENTS TO THE KEYBOARD", ofGetWidth()/2, 75-20);
+  
+  
 }
 
 //--------------------------------------------------------------

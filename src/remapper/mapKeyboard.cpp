@@ -30,7 +30,7 @@ remapKey::remapKey(double _w, double _h, char nt):pianoKey()
 		notes[cur].setDefault(true);
 	}
 	buttons.setup(2,25,OF_VERT,500);
-	clearNotes.setup("clear mapped note", "fonts/Arial.ttf", 24);
+	clearNotes.setup("Clear assigned instrument", "fonts/Arial.ttf", 24);
 }
 
 remapOctave::remapOctave(double width,char octave_begin_note):pianoOctave()
@@ -70,7 +70,7 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 	framePad.x=wid/32.;;
 	w=w+framePad.x*2;
 	h=octaves[0].h+framePad.y;
-	clearMapped.setup("Reset", "fonts/Arial.ttf", 20);
+	clearMapped.setup("Clear all accoustic instruments", "fonts/Arial.ttf", 20);
 }
 
 void remapKeyboard::draw(double _x, double _y){
@@ -119,9 +119,9 @@ void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
   printOut.setSize(24);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
-	printOut.drawString("Select synthesized voice (for unassigned notes)", _x+pad.x, _y+_h/5);
+	printOut.drawString("Clear assigned instruments from entire keyboard", _x+pad.x, _y+_h/5);
 	ofSetColor(255, 255, 255);
-	printOut.drawString("Clear assigned instruments from entire keyboard", _x+pad.x, _y+3*_h/5+pad.y);
+	printOut.drawString("Select synthesized instrument for unassigned keys", _x+pad.x, _y+3*_h/5+pad.y);
 	clearMapped.draw(_x+pad.x*2,_y+2*_h/5);
 	programs.draw(_x+pad.x*2,_y+4*_h/5+pad.y);
 }
@@ -145,7 +145,7 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
     printOut.setMode(OF_FONT_CENTER);
     printOut.setMode(OF_FONT_TOP);
     printOut.setSize(30);
-    string line="When this key is pressed, play ";
+    string line="Press this key to play ";
     if(!key->notes[0].isDefault()){
 			line+=key->notes[0].title;
       //key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+30+printOut.stringHeight(line)+10);
@@ -162,7 +162,8 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
       if(k.isSharp()) ofSetColor(k.notes[0].base.color-.2*255.);
       else ofSetColor(k.notes[0].base.color);
     }
-    else ofSetColor(blue*.8);
+    else if(!k.isSharp()) ofSetColor(white);
+    else ofSetColor(black);
 		ofBeginShape();
     ofVertex(key->x, key->y+key->h);
     ofSetCurveResolution(30);
@@ -172,9 +173,15 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 		ofEndShape(true);
     ofFlat();
 		ofRoundedRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height, pad.x);
+    /*ofNoFill();
+    ofSetColor(yellow);
+    ofSetLineWidth(4);
+    ofRoundedRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height, pad.x);
+    ofFill();*/
     
 
-    ofSetColor(white);
+    if(!k.notes[0].isDefault()||k.isSharp()) ofSetColor(white);
+    else if(!k.isSharp()) ofSetColor(black);
     printOut.drawString(line, box.x+box.width/2, box.y+box.height/6);
     
     if(!key->notes[0].isDefault()){

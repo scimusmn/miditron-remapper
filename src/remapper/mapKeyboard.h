@@ -33,7 +33,7 @@ class remapKeyboard : public pianoKeyboard{
 protected:
 	ofFont printOut;
 	ofDropDown programs;
-	midiButton clearMapped;
+	dallasButton clearMapped;
 public:
 	remapKeyboard(){};
 	void setup(double wid,double nOctaves, unsigned char chan=1);

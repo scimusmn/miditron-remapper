@@ -40,6 +40,7 @@ void testApp::setup(){
 	keyboard.openPort("KeyRig 49");//"KeyRig 49"
 	rolandSynth.openPort("decoder");
 
+  title.loadFont("fonts/DinC.ttf", 50);
 }
 
 long timeCL;
@@ -75,8 +76,8 @@ void testApp::draw(){
 		ofRect(i*10, 0, 1, ofGetHeight());
 	}*/
   
-  ofSetColor(black.opacity(.25));
-  drawHatching(0,0,ofGetWidth(),ofGetHeight(), 20,10);
+  ofSetColor(black);
+  drawHatching(0,0,ofGetWidth(),ofGetHeight(), 20,2);
   
 
 	/*kb.draw(ofGetWidth()/32, ofGetHeight()-(kb.h+ofGetWidth()/32));
@@ -85,16 +86,8 @@ void testApp::draw(){
 	
 	test.draw(400,300);*/
 	
-	rmp.draw(0, 75);
-	ofSetColor(0x333333);
-  ofRaised(.2);
-	ofRoundedRect(-30, 0, ofGetWidth()+60, 75, 15);
-  ofSetShadowDarkness(.5);
-	ofShade(0, 75, 15, ofGetWidth(), OF_DOWN);
-	ofSetColor(0xFFFFFF);
-	report.setMode(OF_FONT_CENTER);
-	report.setSize(40);
-	report.drawString("PATCH INSTRUMENTS TO THE KEYBOARD", ofGetWidth()/2, 75-20);
+	rmp.draw(0, title.h);
+	title.draw("PATCH INSTRUMENTS TO THE KEYBOARD", 0, 0);
   
   
 }

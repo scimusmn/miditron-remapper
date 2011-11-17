@@ -72,6 +72,8 @@ class testApp : public ofBaseApp{
 	int size;
 	int pos;
 	bool typed;
+  
+  titleBar title;
 };
 
 #endif

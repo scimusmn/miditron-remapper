@@ -18,7 +18,7 @@ extern ofColor blue;
 void remapper::setup()
 {
 	yDis=50;
-	kb.setup(7*ofGetWidth()/8., 4);
+	kb.setup(ofGetWidth(), 4);
 	band.setup(parseFile("instruments.xml"));
 	band.configureSize();
 	pianoBackground.loadImage("images/woodPanel.jpg");
@@ -44,7 +44,7 @@ void remapper::draw(double _x, double _y)
   ofRectangle controlBox(_x,_y,ofGetWidth(),band.h+controlPad.y*2);
   ofRectangle kbBox;
   ofRectangle bandBox;
-  ofRectangle keyBox(controlBox.x,controlBox.y+controlBox.height,controlBox.width,kb.h+controlPad.y);
+  ofRectangle keyBox(kb.x,controlBox.y+controlBox.height,kb.w,kb.h+controlPad.y/4);
   
   if(!band1st){
     kbBox=ofRectangle(controlBox.x,controlBox.y,controlBox.width-(band.w+controlPad.x),controlBox.height);
@@ -55,38 +55,31 @@ void remapper::draw(double _x, double _y)
     kbBox=ofRectangle(controlBox.x+bandBox.width,controlBox.y,controlBox.width-(bandBox.width),controlBox.height);
   }
   
-  //ofRectangle & first=((band1st)?bandBox:kbBox);
-  
-  //_-_-_-_-_ draw the background behind the keyboard
-  ofSetColor(black+255*.5);
-  ofRect(keyBox);
-  ofSetColor(gray.opacity(.3));
-  drawHatching(keyBox.x, keyBox.y, keyBox.width, keyBox.height, 4,4);
-  
-	double indent=30;
-	ofShadowRounded(kb.x+indent/2, kb.y+indent/2, kb.w-indent, kb.h-indent, kb.framePad.x/2., indent);
-  
   //_-_-_-_-_ draw the keyboard
-  kb.draw((keyBox.width-kb.w)/2, keyBox.y+controlPad.y/2);
+  kb.draw((ofGetWidth()-kb.w)/2, keyBox.y+controlPad.y/2);
   
   //_-_-_-_-_ draw the background for the control bar
   double controlScale=(ofGetWidth()/controlBackground.width);
-  ofSetColor(255, 255, 255);
-	controlBackground.draw(controlBox.x, controlBox.y+controlBox.height-controlScale*controlBackground.height,controlBox.width,controlScale*controlBackground.height);
+  ofSetColor(black);
+  ofRect(controlBox);
+	//controlBackground.draw(controlBox.x, controlBox.y+controlBox.height-controlScale*controlBackground.height,controlBox.width,controlScale*controlBackground.height);
   
   //_-_-_-_-_ draw shadows
-  ofSetShadowDarkness(.5);
   drawShadowsAroundRect(kbBox, 10);
+  
+  ofSetColor(gray);
+  ofRect(bandBox);
+  
+  ofSetColor(black);
+  drawHatching(bandBox.x, bandBox.y, bandBox.width, bandBox.height, 75, 75);
+  
   drawShadowsAroundRect(bandBox, 10);
   
-  ofShade(controlBox.x, controlBox.y+controlBox.height, 10, controlBox.width, OF_DOWN);
-  ofShade(keyBox.x, keyBox.y+keyBox.height, 10, keyBox.width, OF_DOWN);
-  ofShade(keyBox.x, keyBox.y+keyBox.height, 10, keyBox.width, OF_UP);
-  
+   
   //_-_-_-_-_ draw the band box contents
   dinc.setSize(22);
   dinc.setMode(OF_FONT_TOP);
-  ofSetColor(gray);
+  ofSetColor(yellow);
   dinc.drawString("Drag accoustic instruments to keys on the keyboard", bandBox.x+40, bandBox.y+20);
   band.draw(bandBox.x+controlPad.x,bandBox.y+pad.y*1.5);
 	band.drawInstruments();
@@ -187,7 +180,7 @@ void remapper::drag(int _x, int _y)
 
 void remapper::resize(int _w, int _h)
 {
-	kb.setup(7*ofGetWidth()/8., 4);
+	kb.setup(15*ofGetWidth()/16., 4);
 	band.configureSize();
 	band.update();
 }

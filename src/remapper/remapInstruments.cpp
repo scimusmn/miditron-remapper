@@ -37,10 +37,10 @@ bool remapInst::clickUp()
 
 remapInst::remapInst(string title, unsigned char channel,unsigned char note)
 {
-	point=24;
+	point=22;
   setup(title,channel,note);
 	base.header.setSize(point);
-	base.w=max(float(150), base.header.stringWidth(title)+20);
+	base.w=max(float(175), base.header.stringWidth(title)+20);
 	base.h=max(float(20), base.header.stringHeight("Kjg")+10);
 	w=base.w;
 	h=base.h;
@@ -75,6 +75,7 @@ bool remapInst::clickDown(double _x, double _y)
 	if(!bHolding&&base.clickDown(_x, _y)){
 		blocks.push_back(dragBlock(base));
 		base.clickUp();
+    blocks[blocks.size()-1].w=base.w;
 		relMouse.x=_x-base.x;
 		relPos.y=_y-base.y;
 		play();
@@ -185,12 +186,12 @@ void remapBand::draw(double _x, double _y)
   int nbpb=numBlocksPerBin;
 	//
 	for(int i=0; i<numBins; i++){
-		ofSetColor(0x999999);
+		//ofSetColor(0x999999);
 		double binLeft=x+margin.x+(bin.width+binPad.x)*i;
 		double binRight=x+margin.x+bin.width+(bin.width+binPad.x)*i;
     
     // shading behind the blocks in the bins
-    ofSetShadowDarkness(.4);
+    /*ofSetShadowDarkness(.4);
 		ofShadowRounded(binLeft, y+margin.y, bin.width, h+blockMargin.y, 0,10);
     ofSetColor(gray.opacity(.5));
 		ofRect(binLeft, y+margin.y, bin.width, h+blockMargin.y);
@@ -204,14 +205,14 @@ void remapBand::draw(double _x, double _y)
 		
     ofSetShadowDarkness(.2);
 		ofShade(binLeft, y+h+blockMargin.y+margin.y, 10, bin.width, OF_UP);
-		ofShade(binLeft, y+margin.y, 10, bin.width, OF_DOWN);
+		ofShade(binLeft, y+margin.y, 10, bin.width, OF_DOWN);*/
     for (unsigned int j=0; j<nbpb&&j+i*nbpb<instruments.size()&&j+i*nbpb<16; j++) {
       instruments[j+i*nbpb]->draw(binLeft+blockMargin.x,y+margin.y+binPad.y/2+blockMargin.y/2+(cell.y+blockMargin.y*2)*j);
       if(j<numBlocksPerBin-1){
         double tmpY=instruments[j+i*nbpb]->y+cell.y;
-        ofSetShadowDarkness(.3);
-        ofShade(binLeft, tmpY, 3, bin.width, OF_UP);
-        ofShade(binLeft, tmpY, 3, bin.width, OF_DOWN,false);
+        //ofSetShadowDarkness(.3);
+        //ofShade(binLeft, tmpY, 3, bin.width, OF_UP);
+        //ofShade(binLeft, tmpY, 3, bin.width, OF_DOWN,false);
       }
     }
 	}

@@ -30,7 +30,7 @@ remapKey::remapKey(double _w, double _h, char nt):pianoKey()
 		notes[cur].setDefault(true);
 	}
 	buttons.setup(2,25,OF_VERT,500);
-	clearNotes.setup("Clear assigned instrument", "fonts/Arial.ttf", 24);
+	clearNotes.setup("Clear assigned instrument", 24);
 }
 
 remapOctave::remapOctave(double width,char octave_begin_note):pianoOctave()
@@ -67,10 +67,10 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 	}
 	pressKey(0);
 	framePad.y=wid/32;
-	framePad.x=wid/32.;;
+	framePad.x=wid/64.;
 	w=w+framePad.x*2;
 	h=octaves[0].h+framePad.y;
-	clearMapped.setup("Clear all accoustic instruments", "fonts/Arial.ttf", 20);
+	clearMapped.setup("Clear all accoustic instruments", 20);
 }
 
 void remapKeyboard::draw(double _x, double _y){
@@ -95,32 +95,31 @@ void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
   ofPoint pad(20,20);
   
   //_-_-_-_-_ draw box to hold the controls
-  ofSetShadowDarkness(.4);
-	ofShadowRounded(_x,_y,_w,_h, 0, 10);
-  ofSetColor(black.opacity(.3));
-	ofRect(_x,_y,_w,_h);
-  
-  ofSetColor(gray.opacity(.3));
-  drawHatching(_x, _y, _w, _h, 3, 3);
+  //ofSetShadowDarkness(.4);
+//	ofShadowRounded(_x,_y,_w,_h, 0, 10);
+//  ofSetColor(black.opacity(.3));
+//	ofRect(_x,_y,_w,_h);
+//  
+//  ofSetColor(gray.opacity(.3));
+//  drawHatching(_x, _y, _w, _h, 3, 3);
   
   //_-_-_-_-_ shadow the edges of the box
-  ofSetShadowDarkness(.4);
-  ofShade(_x, _y+_h/2, 3, _w, OF_DOWN,false);
-  ofShade(_x, _y+_h/2, 3, _w, OF_UP);
-  
-  ofShade(_x, _y, 10, _w, OF_DOWN);
-  ofShade(_x, _y+_h, 10, _w, OF_UP);
-  ofShade(_x, _y, 10, _h, OF_RIGHT);
-  ofShade(_x+_w, _y, 10, _h, OF_LEFT);
-  
+//  ofSetShadowDarkness(.4);
+//  ofShade(_x, _y+_h/2, 3, _w, OF_DOWN,false);
+//  ofShade(_x, _y+_h/2, 3, _w, OF_UP);
+//  
+//  ofShade(_x, _y, 10, _w, OF_DOWN);
+//  ofShade(_x, _y+_h, 10, _w, OF_UP);
+//  ofShade(_x, _y, 10, _h, OF_RIGHT);
+//  ofShade(_x+_w, _y, 10, _h, OF_LEFT);
+//  
   _y-=3*pad.y/2;
   
-  ofSetColor(255, 255, 255);
+  ofSetColor(yellow);
   printOut.setSize(24);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
 	printOut.drawString("Clear assigned instruments from entire keyboard", _x+pad.x, _y+_h/5);
-	ofSetColor(255, 255, 255);
 	printOut.drawString("Select synthesized instrument for unassigned keys", _x+pad.x, _y+3*_h/5+pad.y);
 	clearMapped.draw(_x+pad.x*2,_y+2*_h/5);
 	programs.draw(_x+pad.x*2,_y+4*_h/5+pad.y);
@@ -142,8 +141,6 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 	if(key){
 		pianoKey & k=*key;
     
-    printOut.setMode(OF_FONT_CENTER);
-    printOut.setMode(OF_FONT_TOP);
     printOut.setSize(30);
     string line="Press this key to play ";
     if(!key->notes[0].isDefault()){
@@ -155,37 +152,41 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
       line+=programs.getString();
     }
     
-    //_-_-_-_-_ draw the shap of the info box
+    //_-_-_-_-_ draw the shape of the info box
     ofFill();
     ofSetLineWidth(1);
+    ofColor keyColor;
 		if(!k.notes[0].isDefault()){
-      if(k.isSharp()) ofSetColor(k.notes[0].base.color-.2*255.);
-      else ofSetColor(k.notes[0].base.color);
+      if(k.isSharp()) keyColor=k.notes[0].base.color-.2*255.;
+      else keyColor=k.notes[0].base.color;
     }
-    else if(!k.isSharp()) ofSetColor(white);
+    else if(!k.isSharp()) keyColor=white;
+    else keyColor=black;
+    ofSetColor(keyColor);
+    
+    ofEnableSmoothing();
+    ofRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height);
+    ofNoFill();
+    if(k.isSharp()) ofSetColor(white);
     else ofSetColor(black);
-		ofBeginShape();
-    ofVertex(key->x, key->y+key->h);
-    ofSetCurveResolution(30);
-    ofBezierVertex(k.x, k.y+k.h, k.x+(k.x-box.x)/20,box.y+(k.x-box.x)/20,box.x,box.y);
-		ofVertex(box.x+box.width, box.y);
-    ofBezierVertex(box.x+box.width,box.y, (k.x+k.w)+((k.x+k.w)-(box.x+box.width))/20,box.y-((k.x+k.w)-(box.x+box.width))/20,k.x+k.w, k.y+k.h);
-		ofEndShape(true);
-    ofFlat();
-		ofRoundedRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height, pad.x);
-    /*ofNoFill();
-    ofSetColor(yellow);
-    ofSetLineWidth(4);
-    ofRoundedRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height, pad.x);
-    ofFill();*/
+    ofRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height);
+    ofSetLineWidth(3);
+    int kH=k.y+k.h-10;
+    int offSet=(k.x+k.w/2-(box.y-kH)>box.x-pad.x&&k.x+k.w/2+(box.y-kH)<box.x+box.width+pad.x*2)?(box.y-kH):(box.y-kH)-50;
+    ofTriangle(k.x+k.w/2, kH, k.x+k.w/2-offSet, box.y, k.x+k.w/2+offSet, box.y);
+    ofSetLineWidth(2);
+    ofFill();
+    ofSetColor(keyColor);
+    ofTriangle(k.x+k.w/2, kH, k.x+k.w/2-offSet-5, box.y+5, k.x+k.w/2+offSet+5, box.y+5);
+    ofDisableSmoothing();
     
 
     if(!k.notes[0].isDefault()||k.isSharp()) ofSetColor(white);
     else if(!k.isSharp()) ofSetColor(black);
-    printOut.drawString(line, box.x+box.width/2, box.y+box.height/6);
+    printOut.drawString(line, box.x+pad.x*2, box.y+box.height/3);
     
     if(!key->notes[0].isDefault()){
-      key->clearNotes.draw(box.x+(box.width-k.clearNotes.w)/2,box.y+box.height*2/6+printOut.stringHeight(line));
+      key->clearNotes.draw(box.x+box.width-(k.clearNotes.w+pad.x*2),box.y+box.height/3);
 		}
 	}
 }

@@ -23,7 +23,7 @@ void remapper::setup()
 	band.configureSize();
 	pianoBackground.loadImage("images/woodPanel.jpg");
   controlBackground.loadImage("images/background.jpg");
-	dinc.loadFont("fonts/DinC.ttf");
+	dinc.loadFont("fonts/Din.ttf");
 	dinc.setSize(35);
 	dinc.setMode(OF_FONT_TOP);
 }
@@ -55,9 +55,6 @@ void remapper::draw(double _x, double _y)
     kbBox=ofRectangle(controlBox.x+bandBox.width,controlBox.y,controlBox.width-(bandBox.width),controlBox.height);
   }
   
-  //_-_-_-_-_ draw the keyboard
-  kb.draw((ofGetWidth()-kb.w)/2, keyBox.y+controlPad.y/2);
-  
   //_-_-_-_-_ draw the background for the control bar
   double controlScale=(ofGetWidth()/controlBackground.width);
   ofSetColor(black);
@@ -65,7 +62,7 @@ void remapper::draw(double _x, double _y)
 	//controlBackground.draw(controlBox.x, controlBox.y+controlBox.height-controlScale*controlBackground.height,controlBox.width,controlScale*controlBackground.height);
   
   //_-_-_-_-_ draw shadows
-  drawShadowsAroundRect(kbBox, 10);
+  drawBorder(kbBox);
   
   ofSetColor(gray);
   ofRect(bandBox);
@@ -73,19 +70,19 @@ void remapper::draw(double _x, double _y)
   ofSetColor(black);
   drawHatching(bandBox.x, bandBox.y, bandBox.width, bandBox.height, 75, 75);
   
-  drawShadowsAroundRect(bandBox, 10);
+  drawBorder(bandBox);
   
    
   //_-_-_-_-_ draw the band box contents
-  dinc.setSize(22);
+  dinc.setSize(23);
   dinc.setMode(OF_FONT_TOP);
   ofSetColor(yellow);
-  dinc.drawString("Drag accoustic instruments to keys on the keyboard", bandBox.x+40, bandBox.y+20);
+  dinc.drawString("Drag acoustic instruments to keys on the keyboard", bandBox.x+40, bandBox.y+20);
   band.draw(bandBox.x+controlPad.x,bandBox.y+pad.y*1.5);
 	band.drawInstruments();
   
-  //_-_-_-_-_ draw the keyboard info
-  kb.drawKeyInfo(keyBox.x,keyBox.y+keyBox.height, keyBox.width, ofGetHeight()-(controlBox.height+keyBox.height+controlPad.y));
+  //_-_-_-_-_ draw the keyboard
+  kb.draw(0, controlBox.y+controlBox.height,ofGetWidth(),ofGetHeight()-(controlBox.y+controlBox.height));
   
   //_-_-_-_-_ draw the keyboard controls
   kb.drawKeyboardControls(kbBox.x+pad.x, kbBox.y+controlPad.y, kbBox.width-pad.x*2,kbBox.height-controlPad.y*2);

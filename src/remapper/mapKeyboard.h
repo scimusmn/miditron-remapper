@@ -32,12 +32,14 @@ public:
 class remapKeyboard : public pianoKeyboard{
 protected:
 	ofFont printOut;
-	ofDropDown programs;
+	dallasDrop programs;
 	dallasButton clearMapped;
 public:
+  ofRectangle info;
 	remapKeyboard(){};
 	void setup(double wid,double nOctaves, unsigned char chan=1);
 	void draw(double _x, double _y);
+  void draw(double _x, double _y, double _w, double _h);
 	bool clickDown(int _x, int _y);
 	bool clickUp();
 	int getButtonChoice(int num=-1);
@@ -45,7 +47,7 @@ public:
 	bool selectButton(int key, int num){(*this)[key].buttons.select(num);}
 	vector<instrument> & getActiveNotes();
 	vector<instrument> & getNotes(int num);
-	void drawKeyInfo(int _x, int _y, int _w, int _h);
+	void drawKeyInfo();
 	void drawKeyboardControls(int _x, int _y, int _w, int _h);
 	friend class remapper;
 };

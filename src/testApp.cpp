@@ -40,7 +40,7 @@ void testApp::setup(){
 	keyboard.openPort("KeyRig 49");//"KeyRig 49"
 	rolandSynth.openPort("decoder");
 
-  title.loadFont("fonts/DinC.ttf", 50);
+  title.loadFont("fonts/Din.ttf", 50);
 }
 
 long timeCL;
@@ -48,43 +48,17 @@ long timeCL;
 //--------------------------------------------------------------
 void testApp::update(){
 	rmp.update(75);
-  /*if(timeCL<ofGetElapsedTimeMillis()){
-    vector<unsigned char> msg;
-    msg.push_back(248);
-    midiToSend(msg);
-    midiToSend(msg);
-    midiToSend(msg);
-    midiToSend(msg);
-    timeCL=ofGetElapsedTimeMillis()+1;
-  }*/
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-  //ofPushMatrix();
-  //ofScale(ofGetWidth()/1920., ofGetHeight()/1200., 0);
-	ofSetColor(128, 128, 128);
-	//background.draw(0, 0,ofGetWidth(),ofGetHeight());
 	
 	ofBackground(0x33, 0x33, 0x33);
 	
-	/*ofSetColor(yellow.opacity(.5));
-	for (int i=0; i*10<ofGetHeight(); i++) {
-		ofRect(0, i*10, ofGetWidth(), 1);
-	}
-	for (int i=0; i*10<ofGetWidth(); i++) {
-		ofRect(i*10, 0, 1, ofGetHeight());
-	}*/
+	
   
   ofSetColor(black);
-  drawHatching(0,0,ofGetWidth(),ofGetHeight(), 20,2);
-  
-
-	/*kb.draw(ofGetWidth()/32, ofGetHeight()-(kb.h+ofGetWidth()/32));
-	
-	testBut.draw(kb.x+kb.w+40, kb.y+kb.h/2);
-	
-	test.draw(400,300);*/
+  drawHatching(0,0,ofGetWidth(),ofGetHeight(), 25,1);
 	
 	rmp.draw(0, title.h);
 	title.draw("PATCH INSTRUMENTS TO THE KEYBOARD", 0, 0);

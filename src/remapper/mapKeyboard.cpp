@@ -52,13 +52,14 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 	w=wid;
 	channel=chan;
 	int numProgs=loadProgramNames("midiPrograms.ini");
-	programs.setTextSize(20);
+	//programs.setTextSize(20);
 	for (unsigned int i=0; i<getProgramNames().size(); i++) {
 		programs.setValue(getProgramNames()[i]);
 	}
 	programs.setMode(false);
-	printOut.loadFont("fonts/DinC.ttf");
-	printOut.setSize(24);
+  programs.dallasStyle();
+	printOut.loadFont("fonts/HelveticaCond.otf");
+	printOut.setSize(26);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
 	octaves.clear();
@@ -66,15 +67,29 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 		octaves.push_back(remapOctave(wid/nOctaves,i*12));
 	}
 	pressKey(0);
-	framePad.y=wid/32;
+	framePad.y=wid/64;
 	framePad.x=wid/64.;
 	w=w+framePad.x*2;
 	h=octaves[0].h+framePad.y;
-	clearMapped.setup("Clear all accoustic instruments", 20);
+	clearMapped.setup("Clear all accoustic instruments", 22);
 }
 
 void remapKeyboard::draw(double _x, double _y){
 	pianoKeyboard::draw(_x,_y);
+}
+
+void remapKeyboard::draw(double _x, double _y,double _w, double _h){
+  x=_x+(_w-w)/2;
+  
+  info=ofRectangle(x,y+h+20,w,printOut.stringHeight("Kjhg")*3);
+  
+  int pad=(_h-(h+info.height+20))/2;
+  
+  y=_y+pad;
+  info.y=y+h+20;
+  
+	pianoKeyboard::draw(x,y);
+  drawKeyInfo();
 }
 
 string getNoteName(unsigned char note)
@@ -94,43 +109,24 @@ void remapKeyboard::drawKeyboardControls(int _x, int _y, int _w, int _h)
   ofPoint margin(50,50);
   ofPoint pad(20,20);
   
-  //_-_-_-_-_ draw box to hold the controls
-  //ofSetShadowDarkness(.4);
-//	ofShadowRounded(_x,_y,_w,_h, 0, 10);
-//  ofSetColor(black.opacity(.3));
-//	ofRect(_x,_y,_w,_h);
-//  
-//  ofSetColor(gray.opacity(.3));
-//  drawHatching(_x, _y, _w, _h, 3, 3);
-  
-  //_-_-_-_-_ shadow the edges of the box
-//  ofSetShadowDarkness(.4);
-//  ofShade(_x, _y+_h/2, 3, _w, OF_DOWN,false);
-//  ofShade(_x, _y+_h/2, 3, _w, OF_UP);
-//  
-//  ofShade(_x, _y, 10, _w, OF_DOWN);
-//  ofShade(_x, _y+_h, 10, _w, OF_UP);
-//  ofShade(_x, _y, 10, _h, OF_RIGHT);
-//  ofShade(_x+_w, _y, 10, _h, OF_LEFT);
-//  
   _y-=3*pad.y/2;
   
   ofSetColor(yellow);
-  printOut.setSize(24);
+  printOut.setSize(21);
 	printOut.setMode(OF_FONT_LEFT);
 	printOut.setMode(OF_FONT_TOP);
 	printOut.drawString("Clear assigned instruments from entire keyboard", _x+pad.x, _y+_h/5);
 	printOut.drawString("Select synthesized instrument for unassigned keys", _x+pad.x, _y+3*_h/5+pad.y);
-	clearMapped.draw(_x+pad.x*2,_y+2*_h/5);
-	programs.draw(_x+pad.x*2,_y+4*_h/5+pad.y);
+	clearMapped.draw(_x+pad.x,_y+2*_h/5);
+	programs.draw(_x+pad.x,_y+4*_h/5+pad.y);
 }
 
-void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
+void remapKeyboard::drawKeyInfo()
 {
   ofPoint margin(25,25);
   ofPoint pad(20,15);
   
-  ofRectangle box(_x+margin.x+pad.x, _y+margin.y, _w-margin.x*2-pad.x*2, _h-margin.y*2*2);
+  //info=ofRectangle(_x, _y+margin.y, _w, _h-margin.y);
   
 	pianoKey * key=0;
 	for (unsigned int i=0; i<size(); i++) {
@@ -141,7 +137,8 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
 	if(key){
 		pianoKey & k=*key;
     
-    printOut.setSize(30);
+    printOut.setSize(29);
+    printOut.setMode(OF_FONT_MID);
     string line="Press this key to play ";
     if(!key->notes[0].isDefault()){
 			line+=key->notes[0].title;
@@ -165,28 +162,30 @@ void remapKeyboard::drawKeyInfo(int _x, int _y, int _w, int _h)
     ofSetColor(keyColor);
     
     ofEnableSmoothing();
-    ofRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height);
+    ofRect(info.x, info.y, info.width, info.height);
     ofNoFill();
     if(k.isSharp()) ofSetColor(white);
     else ofSetColor(black);
-    ofRect(box.x-pad.x, box.y, box.width+pad.x*2, box.height);
     ofSetLineWidth(3);
-    int kH=k.y+k.h-10;
-    int offSet=(k.x+k.w/2-(box.y-kH)>box.x-pad.x&&k.x+k.w/2+(box.y-kH)<box.x+box.width+pad.x*2)?(box.y-kH):(box.y-kH)-50;
-    ofTriangle(k.x+k.w/2, kH, k.x+k.w/2-offSet, box.y, k.x+k.w/2+offSet, box.y);
-    ofSetLineWidth(2);
+    ofRect(info.x, info.y, info.width, info.height);
+    int kH=k.y+k.h-20;
+    int offSet=k.w/2;
     ofFill();
     ofSetColor(keyColor);
-    ofTriangle(k.x+k.w/2, kH, k.x+k.w/2-offSet-5, box.y+5, k.x+k.w/2+offSet+5, box.y+5);
+    ofTriangle(k.x+k.w/2, kH+2, k.x+k.w/2-offSet, info.y+2, k.x+k.w/2+offSet, info.y+2);
+    if(k.isSharp()) ofSetColor(white);
+    else ofSetColor(black);
+    ofLine(k.x+k.w/2-offSet, info.y, k.x+k.w/2, kH);
+    ofLine(k.x+k.w/2,kH,k.x+k.w/2+offSet,info.y);
     ofDisableSmoothing();
-    
+    ofSetLineWidth(2);
 
-    if(!k.notes[0].isDefault()||k.isSharp()) ofSetColor(white);
-    else if(!k.isSharp()) ofSetColor(black);
-    printOut.drawString(line, box.x+pad.x*2, box.y+box.height/3);
+    if(k.isSharp()) ofSetColor(white);
+    else ofSetColor(black);
+    printOut.drawString(line, info.x+framePad.x, info.y+info.height/2);
     
     if(!key->notes[0].isDefault()){
-      key->clearNotes.draw(box.x+box.width-(k.clearNotes.w+pad.x*2),box.y+box.height/3);
+      key->clearNotes.draw(info.x+info.width-(k.clearNotes.w+framePad.x),info.y+(info.height-key->clearNotes.h)/2);
 		}
 	}
 }

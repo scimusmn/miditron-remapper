@@ -1,57 +1,57 @@
 <band font="ArialNarrow.ttf" xmlns:blck="http://www.smm.org/">
-	<instrument name="Flute 1" color="0x700000">
+	<instrument name="Flute 1" color="0xffe61d">
 		<note>73</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Flute 2" color="0x007000">
+	<instrument name="Flute 2" color="0xde8c3a">
 		<note>72</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Flute 3" color="0x2080F0">
+	<instrument name="Flute 3" color="0x65c20b">
 		<note>71</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Flute 4" color="0x007070">
+	<instrument name="Flute 4" color="0xdac792">
 		<note>70</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Flute 5" color="0x707000">
+	<instrument name="Flute 5" color="0x13b5ea">
 		<note>69</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Flute 6" color="0x700070">
+	<instrument name="Flute 6" color="0x9f73a4">
 		<note>68</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Guiro" color="0xA00000">
+	<instrument name="Guiro" color="0xd4522a">
 		<note>67</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Tambourine" color="0x00A000">
+	<instrument name="Tambourine" color="0xb4b4b4">
 		<note>66</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Cymbal" color="0x0060D0">
+	<instrument name="Cymbal" color="0x6397c7">
 		<note>65</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Chimes 1" color="0xA0A000">
+	<instrument name="Chimes 1" color="0xd58bbC">
 		<note>64</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Chimes 2" color="0x00A0A0">
+	<instrument name="Chimes 2" color="0xd6b130">
 		<note>63</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Chimes 3" color="0xA000A0">
+	<instrument name="Chimes 3" color="0x80a954">
 		<note>62</note>
 		<channel>0</channel>
 	</instrument>
-	<instrument name="Chimes 4" color="0x70A000">
+	<instrument name="Chimes 4" color="0x46b0c7">
 		<note>61</note>
 		<channel>0</channel>
 	</instrument>
-  <instrument name="Chimes 5" color="0x70A000">
+  <instrument name="Chimes 5" color="0xdc7027">
 		<note>60</note>
 		<channel>0</channel>
 	</instrument>

@@ -40,7 +40,7 @@ remapInst::remapInst(string title, unsigned char channel,unsigned char note)
 	point=22;
   setup(title,channel,note);
 	base.header.setSize(point);
-	base.w=max(float(175), base.header.stringWidth(title)+20);
+	base.w=max(float(200), base.header.stringWidth(title)+20);
 	base.h=max(float(20), base.header.stringHeight("Kjg")+10);
 	w=base.w;
 	h=base.h;
@@ -119,10 +119,8 @@ void remapBand::setup(xmlParse * config,double hgt)
   blockMargin.x=10;
   blockMargin.y=5;
   numBlocksPerBin=4;
-	clearBut.setTitle("clear blocks");
-	clearBut.setTextSize(24);
+	clearBut.setup("clear blocks",24);
 	clearBut.setAvailable(true);
-	sideBarBack.loadImage("images/background.jpg");
 	string font=config->prop;
 	for (unsigned int i=0; i<config->size(); i++) {
 		xmlParse xml=config->child[i];
@@ -186,33 +184,13 @@ void remapBand::draw(double _x, double _y)
   int nbpb=numBlocksPerBin;
 	//
 	for(int i=0; i<numBins; i++){
-		//ofSetColor(0x999999);
 		double binLeft=x+margin.x+(bin.width+binPad.x)*i;
 		double binRight=x+margin.x+bin.width+(bin.width+binPad.x)*i;
     
-    // shading behind the blocks in the bins
-    /*ofSetShadowDarkness(.4);
-		ofShadowRounded(binLeft, y+margin.y, bin.width, h+blockMargin.y, 0,10);
-    ofSetColor(gray.opacity(.5));
-		ofRect(binLeft, y+margin.y, bin.width, h+blockMargin.y);
-    
-    ofSetColor(gray.opacity(.3));
-    drawHatching(binLeft, y+margin.y, bin.width, h+blockMargin.y, 3, 3);
-		
-    ofSetShadowDarkness(.3);
-		ofShade(binLeft, y+margin.y, 10, h+blockMargin.y, OF_RIGHT);
-		ofShade(binRight, y+margin.y, 10, h+blockMargin.y, OF_LEFT);
-		
-    ofSetShadowDarkness(.2);
-		ofShade(binLeft, y+h+blockMargin.y+margin.y, 10, bin.width, OF_UP);
-		ofShade(binLeft, y+margin.y, 10, bin.width, OF_DOWN);*/
     for (unsigned int j=0; j<nbpb&&j+i*nbpb<instruments.size()&&j+i*nbpb<16; j++) {
       instruments[j+i*nbpb]->draw(binLeft+blockMargin.x,y+margin.y+binPad.y/2+blockMargin.y/2+(cell.y+blockMargin.y*2)*j);
       if(j<numBlocksPerBin-1){
         double tmpY=instruments[j+i*nbpb]->y+cell.y;
-        //ofSetShadowDarkness(.3);
-        //ofShade(binLeft, tmpY, 3, bin.width, OF_UP);
-        //ofShade(binLeft, tmpY, 3, bin.width, OF_DOWN,false);
       }
     }
 	}

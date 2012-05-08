@@ -25,7 +25,7 @@ public:
 
 class remapOctave : public pianoOctave{
 public:
-	remapOctave(double width,char octave_begin_note);
+	remapOctave(double width,int numNotes,char octave_begin_note);
 	friend class remapKeyboard;
 };
 
@@ -43,11 +43,12 @@ public:
 	bool clickDown(int _x, int _y);
 	bool clickUp();
 	int getButtonChoice(int num=-1);
-	bool selectButton(int num){getKey().buttons.select(num);}
-	bool selectButton(int key, int num){(*this)[key].buttons.select(num);}
+	bool selectButton(int num);
+	bool selectButton(int key, int num);
 	vector<instrument> & getActiveNotes();
 	vector<instrument> & getNotes(int num);
 	void drawKeyInfo();
 	void drawKeyboardControls(int _x, int _y, int _w, int _h);
+	void changeProgram(int choiceNum);
 	friend class remapper;
 };

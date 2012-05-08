@@ -9,12 +9,10 @@
 #include "ofxMidiOut.h"
 
 #include "keyboard.h"
-#include "mapKeyboard.h"
+#include "remapper/mapKeyboard.h"
 #include "instrument.h"
 #include "band.h"
-#include "keyRemapper.h"
-
-#include "ofxNetwork.h"
+#include "remapper/keyRemapper.h"
 
 class testApp : public ofBaseApp{
 
@@ -32,16 +30,9 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 	void midiReceived(double deltatime, std::vector< unsigned char > *message, int port);
 	void midiToSend(vector<unsigned char> message);
-	
-	//ofxMidiIn midiIn;
-	//MyMidiListener midiListener;
 
-	ofxMidiIn drumPad;
 	ofxMidiIn keyboard;
-	ofxMidiOut rolandSynth;
-	
-	ofFont report;
-	string rep;
+	ofxMidiOut midiOut;
 	
 	remapKeyboard kb;
 	
@@ -49,25 +40,9 @@ class testApp : public ofBaseApp{
 	ofScrollBar scroll;
 	ofScrollBar scrollVert;
 	
-	ofImage background;
-	ofImage pB;
-	
-	ofDropDown test;
-	ofButton testBut;
-	
 	remapper rmp;
 	
 	
-	//*********** For network connection ***********//
-	
-	ofxTCPClient tcpClient;
-	string msgTx, msgRx;
-	
-	float counter;
-	int connectTime;
-	int deltaTime;
-	
-	bool weConnected;
 	
 	int size;
 	int pos;

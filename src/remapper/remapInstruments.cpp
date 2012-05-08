@@ -61,14 +61,6 @@ void remapInst::operator=(const instrument & t)
 	point=t.point;
 }
 
-
-/*bool remapInst::over(instrument & t, int i)
-{
-	dragBlock & tmp=blocks[i];
-	return ((tmp.x+tmp.xDisp>t.x&&tmp.x+tmp.xDisp<t.x+t.w)||(tmp.x+tmp.xDisp+tmp.w>=t.x&&tmp.x+tmp.xDisp+tmp.w<=t.x+t.w))&&\
-	((tmp.y+tmp.yDisp>t.y&&tmp.y+tmp.yDisp<t.y+t.h)||(tmp.y+tmp.yDisp+tmp.h>=t.y&&tmp.y+tmp.yDisp+tmp.h<=t.y+t.h));
-}*/
-
 bool remapInst::clickDown(double _x, double _y)
 {
 	bool ret=0;
@@ -119,20 +111,20 @@ void remapBand::setup(xmlParse * config,double hgt)
   blockMargin.x=10;
   blockMargin.y=5;
   numBlocksPerBin=4;
-	clearBut.setup("clear blocks",24);
+	clearBut.setup("clear blocks",24);				//set up the clear button
 	clearBut.setAvailable(true);
-	string font=config->prop;
+	string font=config->prop;						//maybe outdated way of finding font name?
 	for (unsigned int i=0; i<config->size(); i++) {
-		xmlParse xml=config->child[i];
+		xmlParse xml=config->child[i];				//if there are child blocks that are instruments
 		if (xml.label=="instrument") {
 			string col=xml.prop;
 			string title=xml.name;
-			long color=strtol(col.c_str(),NULL,0);
+			long color=strtol(col.c_str(),NULL,0);	//get the color of the instrument block
 			int curInst=instruments.size();
 			unsigned char note, channel;
 			bool percussive=false;
 			double delay=0;
-			map<string,int> list;
+			map<string,int> list;					//set up the map for the string switch
 			list["note"]=0;
 			list["channel"]=1;
 			list["percussive"]=2;
@@ -242,4 +234,5 @@ bool remapBand::mouseMotion(int _x, int _y)
 			instruments[i]->update(-bar.getScrollPosition(),OF_VERT);
 		}
 	}
+	return false;
 }

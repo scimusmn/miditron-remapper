@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\testApp.cpp" />
+    <ClCompile Include="..\MidiSequencer\src\instruments\groupInstrument.cpp">
+      <Filter>instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MidiSequencer\src\instruments\instrument.cpp">
+      <Filter>instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MidiSequencer\src\instruments\synthInst.cpp">
+      <Filter>instruments</Filter>
+    </ClCompile>
+    <ClCompile Include="src\remapper\keyRemapper.cpp">
+      <Filter>remapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\remapper\mapKeyboard.cpp">
+      <Filter>remapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\remapper\remapInstruments.cpp">
+      <Filter>remapper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MidiSequencer\src\soundBlocks\soundBlocks.cpp">
+      <Filter>soundBlocks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MidiSequencer\src\keyboard\keyboard.cpp">
+      <Filter>keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMidi\src\ofxMidiBase.cpp">
+      <Filter>ofxMidi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMidi\src\ofxMidiIn.cpp">
+      <Filter>ofxMidi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMidi\src\ofxMidiOut.cpp">
+      <Filter>ofxMidi\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MidiSequencer\src\band.cpp" />
+    <ClCompile Include="..\MidiSequencer\src\midiConfig.cpp" />
+    <ClCompile Include="..\dallasEng\dallasEng.cpp">
+      <Filter>dallasEng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxMidi\libs\RtMidi.cpp">
+      <Filter>ofxMidi\libs</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\testApp.h" />
+    <ClInclude Include="..\MidiSequencer\src\instruments\groupInstrument.h">
+      <Filter>instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MidiSequencer\src\instruments\instrument.h">
+      <Filter>instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MidiSequencer\src\instruments\synthInst.h">
+      <Filter>instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="src\remapper\keyRemapper.h">
+      <Filter>remapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\remapper\mapKeyboard.h">
+      <Filter>remapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\remapper\remapInstruments.h">
+      <Filter>remapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MidiSequencer\src\soundBlocks\soundBlocks.h">
+      <Filter>soundBlocks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MidiSequencer\src\keyboard\keyboard.h">
+      <Filter>keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMidi\src\ofxMidiUtils.h">
+      <Filter>ofxMidi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMidi\src\ofxMidiBase.h">
+      <Filter>ofxMidi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMidi\src\ofxMidiIn.h">
+      <Filter>ofxMidi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMidi\src\ofxMidiOut.h">
+      <Filter>ofxMidi\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MidiSequencer\src\band.h" />
+    <ClInclude Include="..\MidiSequencer\src\midiConfig.h" />
+    <ClInclude Include="..\dallasEng\dallasEng.h">
+      <Filter>dallasEng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMidi\libs\RtError.h">
+      <Filter>ofxMidi\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxMidi\libs\RtMidi.h">
+      <Filter>ofxMidi\libs</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="instruments">
+      <UniqueIdentifier>{16c6da23-a99b-43e9-8d12-dda29bf36c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="remapper">
+      <UniqueIdentifier>{388ea49c-683e-4092-b65a-6b29b8e4b9cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="soundBlocks">
+      <UniqueIdentifier>{05292127-c7f5-443c-9088-38e39b5bcbf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="keyboard">
+      <UniqueIdentifier>{e7518b56-3123-4675-8422-680843e7a924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxMidi">
+      <UniqueIdentifier>{db5d2a8b-1ca3-4ee2-97b4-2486139ab637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxMidi\src">
+      <UniqueIdentifier>{aec0c3d6-b1fe-4146-b998-93a7fb814655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dallasEng">
+      <UniqueIdentifier>{9e52e4cb-2ddf-4caa-b169-58a403560b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ofxMidi\libs">
+      <UniqueIdentifier>{3019712c-3c3a-4c55-9160-a12188064a32}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

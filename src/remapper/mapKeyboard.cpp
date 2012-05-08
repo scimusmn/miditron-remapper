@@ -8,6 +8,7 @@
  */
 
 #include "mapKeyboard.h"
+#include "midiConfig.h"
 
 extern ofColor white;
 extern ofColor black;
@@ -24,26 +25,28 @@ remapKey::remapKey(double _w, double _h, char nt):pianoKey()
 	o_h=_h;
 	bSharp=false;
 	bSelected=false;
-	for (int j=0; j<3; j++) {
-		int cur=notes.size();
+	for (int j=0; j<1; j++) {
 		notes.push_back(instrument("holder",1,60));
-		notes[cur].setDefault(true);
+		notes.back().setDefault(true);
 	}
 	buttons.setup(2,25,OF_VERT,500);
 	clearNotes.setup("Clear assigned instrument", 24);
 }
 
-remapOctave::remapOctave(double width,char octave_begin_note):pianoOctave()
+remapOctave::remapOctave(double width,int numKeys,char octave_begin_note):pianoOctave()
 {
-	w=width,h=width/1.2;
-	double wwid=w/7.;
+	w=0,h=width/1.2;
+	double wwid=width/7.;
 	int sharps[5]={1,3,6,8,10};
-	for (int i=0; i<12; i++) {
+	for (int i=0; i<numKeys; i++) {
 		char nt=octave_begin_note+i;
 		keys.push_back(remapKey(wwid,h,nt));
+		for(int j=0; j<5; j++){
+			if(sharps[j]==i) keys[i].setSharp(true);
+		}
 	}
-	for (unsigned int i=0; i<5; i++) {
-		keys[sharps[i]].setSharp(true);
+	for(unsigned int i=0; i<keys.size(); i++){
+		if(!keys[i].isSharp()) w+=keys[i].w;
 	}
 }
 
@@ -51,11 +54,11 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 {
 	w=wid;
 	channel=chan;
-	int numProgs=loadProgramNames("midiPrograms.ini");
 	//programs.setTextSize(20);
-	for (unsigned int i=0; i<getProgramNames().size(); i++) {
-		programs.setValue(getProgramNames()[i]);
-	}
+	if(programs.size()<getSynthInstruments().size())
+		for (unsigned int i=0; i<getSynthInstruments().size(); i++) {
+			programs.setValue(getSynthInstruments()[i].name);
+		}
 	programs.setMode(false);
   programs.dallasStyle();
 	printOut.loadFont("fonts/HelveticaCond.otf");
@@ -64,14 +67,18 @@ void remapKeyboard::setup(double wid,double nOctaves, unsigned char chan)
 	printOut.setMode(OF_FONT_TOP);
 	octaves.clear();
 	for (int i=0; i<nOctaves; i++) {
-		octaves.push_back(remapOctave(wid/nOctaves,i*12));
+		octaves.push_back(remapOctave(wid/(nOctaves+1/7.),12,i*12));
 	}
+	octaves.push_back(remapOctave(wid/(nOctaves+1/7.),1,nOctaves*12));
 	pressKey(0);
 	framePad.y=wid/64;
 	framePad.x=wid/64.;
 	w=w+framePad.x*2;
 	h=octaves[0].h+framePad.y;
 	clearMapped.setup("Clear all accoustic instruments", 22);
+  programs.w=max(programs.w,clearMapped.w);
+
+  changeProgram(programs.getChoiceNumber());
 }
 
 void remapKeyboard::draw(double _x, double _y){
@@ -195,17 +202,11 @@ bool remapKeyboard::clickDown(int _x, int _y)
 	bool ret=false;
 	if(programs.clickDown(_x, _y)){
 		if(programs.isSelected()){
-			vector<unsigned char> msg;
-			msg.push_back(MIDI_PROGRAM_CHANGE+channel);
-			msg.push_back(programs.getChoiceNumber());
-			ofGetAppPtr()->midiToSend(msg);
+			changeProgram(programs.getChoiceNumber());
 		}
 	}
 	else if(programs.justSelected()){
-		vector<unsigned char> msg;
-		msg.push_back(MIDI_PROGRAM_CHANGE+channel);
-		msg.push_back(programs.getChoiceNumber());
-		ofGetAppPtr()->midiToSend(msg);
+		changeProgram(programs.getChoiceNumber());
 	}
 	else if(clearMapped.clickDown(_x, _y)){
 		for (unsigned int i=0; i<(*this).size(); i++) {
@@ -214,10 +215,18 @@ bool remapKeyboard::clickDown(int _x, int _y)
 		}
 	}
 	else if(ret=pianoKeyboard::clickDown(_x,_y)){
-    if(getKey().notes[0].isDefault()) getKey().notes[0].base.note=getKey().getNote()+MIDI_KEYBOARD_START;
-    getKey().notes[0].play();
-  }
+		if(getKey().notes[0].isDefault()) getKey().notes[0].base.note=getKey().getNote()+MIDI_KEYBOARD_START,getKey().notes[0].base.channel=1;
+		getKey().notes[0].play();
+	}
 	return ret;
+}
+
+void remapKeyboard::changeProgram(int choiceNum)
+{
+	vector<unsigned char> msg;
+	msg.push_back(MIDI_PROGRAM_CHANGE+channel);
+	msg.push_back(getSynthInstruments()[choiceNum].number);
+	ofGetAppPtr()->midiToSend(msg);
 }
 
 bool remapKeyboard::clickUp()
@@ -226,7 +235,7 @@ bool remapKeyboard::clickUp()
 	clearMapped.clickUp();
 	if(pianoKeyboard::clickUp())
     getKey().notes[0].stop();
-  
+	return false;
 }
 
 int remapKeyboard::getButtonChoice(int num)
@@ -243,4 +252,14 @@ vector<instrument> & remapKeyboard::getActiveNotes()
 vector<instrument> & remapKeyboard::getNotes(int num)
 {
 	return (*this)[num].notes;
+}
+
+bool remapKeyboard::selectButton(int num){
+	getKey().buttons.select(num);
+	return false;
+}
+
+bool remapKeyboard::selectButton(int key, int num){
+	(*this)[key].buttons.select(num);
+	return false;
 }

@@ -1,0 +1,6 @@
+VERBOSE=1
+MIDI_OUT=Roland SonicCell
+MIDI_IN=KeyRig 49
+INSTRUMENT_FILE=instruments/instruments.xml
+SYNTH_INST_FILE=midiPrograms.ini
+TITLE=PATCH INSTRUMENTS TO THE KEYBOARD

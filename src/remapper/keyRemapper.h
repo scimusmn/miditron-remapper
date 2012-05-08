@@ -25,7 +25,7 @@ public:
 	remapBand band;
 	remapper():ofInterObj(){}
 	void setup();
-	void update(int num);
+	void update();
 	void draw(double _x, double _y);
 	bool clickDown(int _x, int _y);
 	bool clickUp(int _x, int _y);

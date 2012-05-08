@@ -8,6 +8,7 @@
  */
 
 #include "keyRemapper.h"
+#include "midiConfig.h"
 
 extern ofColor white;
 extern ofColor black;
@@ -17,19 +18,28 @@ extern ofColor blue;
 
 void remapper::setup()
 {
+	// set the vertical displacement
 	yDis=50;
+
+	// fill the keyboard with 4 octave of keys
 	kb.setup(ofGetWidth(), 4);
-	band.setup(parseFile("instruments.xml"));
+
+	//setup the band, with the file containing the physical instruments.
+	band.setup(parseFile(cfg().instFile.c_str()));
 	band.configureSize();
-	pianoBackground.loadImage("images/woodPanel.jpg");
-  controlBackground.loadImage("images/background.jpg");
+
+	// load the font used to draw the text on screen.
 	dinc.loadFont("fonts/Din.ttf");
 	dinc.setSize(35);
 	dinc.setMode(OF_FONT_TOP);
+
+	// make sure that the held instrument isn't accidently clicked in the first place.
+	held.setHeld(false);
 }
 
-void remapper::update(int num)
+void remapper::update()
 {
+	// adjust how many bins of instruments there are in the band side bar
 	band.configureSize();
 	band.update();
 }
@@ -56,10 +66,8 @@ void remapper::draw(double _x, double _y)
   }
   
   //_-_-_-_-_ draw the background for the control bar
-  double controlScale=(ofGetWidth()/controlBackground.width);
   ofSetColor(black);
   ofRect(controlBox);
-	//controlBackground.draw(controlBox.x, controlBox.y+controlBox.height-controlScale*controlBackground.height,controlBox.width,controlScale*controlBackground.height);
   
   //_-_-_-_-_ draw shadows
   drawBorder(kbBox);
@@ -67,7 +75,7 @@ void remapper::draw(double _x, double _y)
   ofSetColor(gray);
   ofRect(bandBox);
   
-  ofSetColor(black);
+  ofSetColor(white*.15);
   drawHatching(bandBox.x, bandBox.y, bandBox.width, bandBox.height, 75, 75);
   
   drawBorder(bandBox);
@@ -95,7 +103,8 @@ void remapper::draw(double _x, double _y)
 
 bool remapper::clickDown(int _x, int _y)
 {
-	if(kb.clickDown(_x, _y));
+	bool ret=false;
+	if(kb.clickDown(_x, _y)) ret=true;
 	for (unsigned int i=0; i<kb.getActiveNotes().size(); i++) {
 		/*if(kb.getActiveNotes()[i].over(_x,_y)){
 			held=kb.getActiveNotes()[i];
@@ -108,6 +117,7 @@ bool remapper::clickDown(int _x, int _y)
 		held.clickDown(_x, _y);
 	}
 	kb.getKey().buttons.clickDown(_x, _y);
+	return ret;
 }
 
 bool remapper::clickUp(int _x, int _y)
@@ -149,6 +159,7 @@ bool remapper::clickUp(int _x, int _y)
 	//if(held.clickUp(kb.getActiveNotes()))
 	//	kb.selectButton(1);
 	kb.getKey().buttons.clickUp();
+	return false;
 }
 
 void remapper::drag(int _x, int _y)

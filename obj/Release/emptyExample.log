@@ -1,0 +1,31 @@
+﻿Build started 4/26/2012 3:34:22 PM.
+     1>Project "C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\emptyExample.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "obj\Release\MidiPatcher.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         emptyExample.vcxproj -> C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\bin\MidiPatcher.exe
+       PostBuildEvent:
+         Description: adding DLLs and creating data folder
+         xcopy /e /i /y "C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\*.dll" "C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\bin"
+         if not exist "C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\bin\data" mkdir  "C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\bin\data"
+         
+         
+         :VCEnd
+         C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\fmodex.dll
+         C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\fmodexL.dll
+         C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\FreeImage.dll
+         C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\FreeType-6.dll
+         C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\glut32.dll
+         C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\\..\..\..\export\vs2010\Zlib.dll
+         6 File(s) copied
+       FinalizeBuildStatus:
+         Deleting file "obj\Release\MidiPatcher.unsuccessfulbuild".
+         Touching "obj\Release\MidiPatcher.lastbuildstate".
+     1>Done Building Project "C:\Users\aheidgerken\Documents\openFrameworks\apps\projects\MidiPatcher\emptyExample.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.21
